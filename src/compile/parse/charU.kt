@@ -14,5 +14,8 @@ fun isOperatorChar(ch: Char): Bool =
 		else -> false
 	}
 
+fun isNameStartChar(ch: Char): Bool =
+	inRange(ch, 'a', 'z') || inRange(ch, 'A', 'Z')
+
 fun isNameChar(ch: Char): Bool =
-	inRange(ch, 'a', 'z') || inRange(ch, 'A', 'Z') || isDigit(ch) || isOperatorChar(ch)
+	isNameStartChar(ch) || isDigit(ch) || isOperatorChar(ch)

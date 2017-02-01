@@ -4,8 +4,18 @@ import u.*
 import ast.*
 import compile.err.*
 
+fun parseModule(source: Input, name: Sym): Module =
+	Parser(source).parseModule(name)
+
 private class Parser(source: Input) : Lexer(source) {
-	fun parseClass(name: Sym): Class {
+	fun parseModule(name: Sym): Module {
+		val start = curPos()
+		val imports = Arr.empty<Import>() //TODO
+		val klass = parseClass(name)
+		return Module(locFrom(start), imports, klass)
+	}
+
+	private fun parseClass(name: Sym): Class {
 		val start = curPos()
 		val head = parseHead()
 		val members = buildUntilNull(this::parseMember)

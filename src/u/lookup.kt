@@ -31,7 +31,7 @@ object Hm {
 		}
 
 	fun<K, V> buildFromValues(values: Arr<V>, getKey: (V) -> K): HashMap<K, V> =
-		buildFromArr(values) { key, value ->
+		buildFromArr(values) { _, value ->
 			getKey(value) to value
 		}
 }
@@ -58,12 +58,26 @@ fun<K, V> HashMap<K, V>.surelyRemove(key: K) {
 	remove(key)
 }
 
+class LookupBuilder<K, V> : HashMap<K, V>() {
+	fun addOrFail(key: K, value: V, fail: () -> Error) {
+		if (key in this)
+			throw fail()
+		this[key] = value
+	}
+}
+
 
 /** Immutable hash map. */
 class Lookup<K, V> private constructor(private val data: HashMap<K, V>) : Iterable<Pair<K, V>> {
 	companion object {
 		fun<K, V> empty(): Lookup<K, V> =
 			Lookup(HashMap())
+
+		fun<K, V> beeld(action: LookupBuilder<K, V>.() -> Unit): Lookup<K, V> {
+			val l = LookupBuilder<K, V>()
+			l.action()
+			return fromHashMap(l)
+		}
 
 		fun<K, V> buildWithSize(size: Int, builder: Action<(K, V) -> V?>) =
 			Lookup(Hm.buildWithSize(size, builder))

@@ -218,7 +218,7 @@ inline fun<reified T, U> buildFromFirstAndMapTail(first: T, arr: Arr<U>, map: (U
 			add(map(element))
 	}
 
-class ArrayBuilder<T>(val l: MutableList<T>) {
+class ArrayBuilder<T>(private val l: MutableList<T>) {
 	fun add(t: T) {
 		l.add(t)
 	}

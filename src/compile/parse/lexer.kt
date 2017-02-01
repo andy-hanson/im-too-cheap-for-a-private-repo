@@ -1,8 +1,10 @@
 package compile.parse
 
+import ast.LiteralValue
 import u.*
+import compile.err.*
 
-abstract class Lexer(private val source: Input) {
+internal abstract class Lexer(private val source: Input) {
 	private var peek: Char = source.readChar()
 	private var pos: Pos = startPos
 	private var indent: Int = 0
@@ -117,26 +119,28 @@ abstract class Lexer(private val source: Input) {
 		val value =
 			if (isFloat) {
 				val f = str.toDouble()
-				ast.LiteralValue.Float(if (negate) -f else f)
+				LiteralValue.Float(if (negate) -f else f)
 			}
 			else {
 				val i = str.toLong()
-				ast.LiteralValue.Int(if (negate) -i else i)
+				LiteralValue.Int(if (negate) -i else i)
 			}
 		return Token.Literal(value)
 	}
 
-	private inline fun takeSymbol(first: Char, pred: Pred<Char>, makeToken: (Sym) -> Token): Token {
-		val text = buildStringFromChars { addChar ->
+	private inline fun buildSymbol(first: Char, pred: Pred<Char>): Sym =
+		buildStringFromChars { addChar ->
 			addChar(first)
 			bufferWhile(addChar, pred)
-		}
-		val name = text.sym
+		}.sym
+
+	private inline fun takeNameToken(first: Char, pred: Pred<Char>, makeToken: (Sym) -> Token): Token {
+		val name = buildSymbol(first, pred)
 		return Token.Kw.opKeyword(name) ?: makeToken(name)
 	}
 
 	private fun takeOperator(ch: Char): Token =
-		takeSymbol(ch, ::isOperatorChar) { Token.Operator(it) }
+		takeNameToken(ch, ::isOperatorChar) { Token.Operator(it) }
 
 	private inline fun countWhile(pred: Pred<Char>): Int {
 		var count = 0
@@ -247,14 +251,46 @@ abstract class Lexer(private val source: Input) {
 			in '0' .. '9' ->
 				takeNumber(false, ch)
 			in 'a' .. 'z' ->
-				takeSymbol(ch, ::isNameChar) { Token.Name(it) }
+				takeNameToken(ch, ::isNameChar) { Token.Name(it) }
 			in 'A' .. 'Z' ->
-				takeSymbol(ch, ::isNameChar) { Token.TyName(it) }
+				takeNameToken(ch, ::isNameChar) { Token.TyName(it) }
 			'@', '+', '*', '/', '^', '?', '<', '>', '=' ->
 				takeOperator(ch)
 
 			else ->
 				raise(Loc.singleChar(pos), Err.UnrecognizedCharacter(ch))
+		}
+	}
+
+	protected fun takeSpace() {
+		expectCharacter(' ')
+	}
+	protected fun takeLparen() {
+		expectCharacter('(')
+	}
+	protected fun takeComma() {
+		expectCharacter(',')
+	}
+	protected fun tryTakeRparen(): Bool = tryTake(')')
+
+	private fun tryTake(ch: Char): Bool {
+		if (peek == ch) {
+			skip()
+			return true
+		}
+		return false
+	}
+
+	protected fun takeName(): Sym {
+		val ch = expectCharacter("name") { it in 'a' .. 'z' }
+		return buildSymbol(ch, ::isNameChar)
+	}
+
+	protected fun takeIndent() {
+		this.indent++
+		expectCharacter('\n')
+		repeat(this.indent) {
+			expectCharacter('\t')
 		}
 	}
 
@@ -272,4 +308,18 @@ abstract class Lexer(private val source: Input) {
 			else -> TODO("Compile error: bad escape")
 		}
 
+	private fun expectCharacter(char: Char): Unit {
+		val ch = readChar()
+		if (ch != char)
+			raise<Unit>(Loc.singleChar(pos), Err.UnexpectedCharacter(ch, "'$char'"))
+	}
+	private fun expectCharacter(explanation: String, pred: (Char) -> Bool): Char {
+		val ch = readChar()
+		if (!pred(ch))
+			raise<Unit>(Loc.singleChar(pos), Err.UnexpectedCharacter(ch, explanation))
+		return ch
+	}
+
+	protected fun<T> unexpected(start: Pos, token: Token): T =
+		raise<T>(locFrom(start), Err.Unexpected(token))
 }

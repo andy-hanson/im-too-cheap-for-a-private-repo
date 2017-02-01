@@ -21,5 +21,3 @@ class Late<T>() {
 		value = v
 	}
 }
-package u
-

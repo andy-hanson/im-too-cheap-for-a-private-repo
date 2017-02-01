@@ -12,6 +12,19 @@ interface Input : Closeable {
 	fun readChar(): Char
 }
 
+//move?
+class StringInput(val s: String) : Input {
+	var idx = 0
+	override fun readChar(): Char {
+		val ch = if (idx < s.length) s[idx] else Input.EOF
+		idx++
+		return ch
+	}
+
+	override fun close() {}
+}
+
+
 class FileNotFound(val path: Path) : Exception("'$path'")
 
 interface FileInput {

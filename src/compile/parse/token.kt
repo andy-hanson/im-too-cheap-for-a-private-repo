@@ -7,6 +7,9 @@ sealed class Token {
 	class Name(val name: Sym) : Token() {
 		override fun toString() = "Name($name)"
 	}
+	class TyName(val name: Sym) : Token() {
+		override fun toString() = "Name($name)"
+	}
 	class Operator(val name: Sym) : Token() {
 		override fun toString() = "Operator($name)"
 	}
@@ -35,11 +38,16 @@ sealed class Token {
 	object At : Kw("@")
 	object AtAt : Kw("@@")
 	object Backslash : Kw("\\")
-	object Equals : Kw("=")
-	object Import : Kw("import")
-	object Underscore : Kw("_")
-	object Fun : Kw("fun")
 	object Def : Kw("def")
+	object Enum : Kw("enum")
+	object Fun : Kw("fun")
+	object Generic : Kw("generic")
+	object Import : Kw("import")
+	object Slots : Kw("slots")
+	object Val : Kw("val")
+	object Var : Kw("var")
+	object Equals : Kw("=")
+	object Underscore : Kw("_")
 
 	// Keyword that does *not* resemble an identifier. We want toString() to look nice.
 	abstract class PlainKw(val name: String) : Token() {
@@ -63,6 +71,6 @@ sealed class Token {
 	object Colon : PlainKw(":")
 	object Comma : PlainKw(",")
 	object Dot : PlainKw(".")
-	object DotDot : PlainKw("..")
+	object DotDot : PlainKw("")
 
 }
