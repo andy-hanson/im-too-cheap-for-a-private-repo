@@ -4,43 +4,83 @@ import u.*
 import ast.*
 import compile.err.*
 
-fun parseModule(source: Input, name: Sym): Module =
+internal fun parseModule(source: String, name: Sym): Module =
 	Parser(source).parseModule(name)
 
-private class Parser(source: Input) : Lexer(source) {
+sealed class Either<T, U> {
+	class Left<T>(val value: T) : Either<T, Nothing>()
+	class Right<U>(val value: U) : Either<Nothing, U>()
+}
+
+private class Parser(source: String) : Lexer(source) {
 	fun parseModule(name: Sym): Module {
 		val start = curPos()
-		val imports = Arr.empty<Import>() //TODO
-		val klass = parseClass(name)
+		val kw = takeKeyword()
+		val (imports, classStart, nextKw) =
+			if (kw == Token.Import)
+				Triple(buildUntilNull(this::parseImport), curPos(), takeKeyword())
+			else
+				Triple(Arr.empty(), start, kw)
+		val klass = parseClass(name, classStart, nextKw)
 		return Module(locFrom(start), imports, klass)
 	}
 
-	private fun parseClass(name: Sym): Class {
+	private fun parseImport(): Module.Import? {
+		if (tryTakeNewline()) {
+			return null
+		}
+
+		takeSpace()
+
 		val start = curPos()
-		val head = parseHead()
-		val members = buildUntilNull(this::parseMember)
-		return Class(locFrom(start), name, head, members)
+
+		var leadingDots = 0
+		while (tryTakeDot()) {
+			leadingDots += 1
+		}
+
+		val pathParts = build<Sym> {
+			add(takeName())
+			while (tryTakeDot()) {
+				add(takeName())
+			}
+		}
+
+		val path = Path(pathParts)
+		val importPath =
+			if (leadingDots == 0)
+				Module.Import.ImportPath.Global(path)
+			else
+				Module.Import.ImportPath.Relative(RelPath(leadingDots, path))
+
+		return Module.Import(locFrom(start), importPath)
 	}
 
-	private fun parseHead(): Class.Head {
-		val (start, next) = posNext()
-		when (next) {
+	private fun parseClass(name: Sym, start: Pos, kw: Token.Kw): Klass {
+		val head = parseHead(start, kw)
+		val members = buildUntilNull(this::parseMember)
+		return Klass(locFrom(start), name, head, members)
+	}
+
+	private fun parseHead(start: Pos, kw: Token.Kw): Klass.Head {
+		when (kw) {
 			Token.Slots -> {
 				takeIndent()
-				val vars = buildUntilNull(this::parseVar)
-				return Class.Head.Record(locFrom(start), vars)
+				val vars = buildUntilNull(this::parseSlot)
+				return Klass.Head.Record(locFrom(start), vars)
 			}
 			Token.Enum -> {
 				TODO("")
 			}
 			else -> {
-				unexpected(start, next)
+				unexpected(start, kw)
 			}
 		}
 	}
 
-	private fun parseVar(): Class.Head.Record.Var? {
+	private fun parseSlot(): Klass.Head.Record.Var? {
 		val (start, next) = posNext()
+		//TODO: 'take' method
 		val isMutable = when (next) {
 			Token.Var -> true
 			Token.Val -> false
@@ -51,7 +91,7 @@ private class Parser(source: Input) : Lexer(source) {
 		val ty = parseTy()
 		takeSpace()
 		val name = takeName()
-		return Class.Head.Record.Var(locFrom(start), isMutable, ty, name)
+		return Klass.Head.Record.Var(locFrom(start), isMutable, ty, name)
 	}
 
 	private fun parseMember(): Member? {
@@ -62,10 +102,19 @@ private class Parser(source: Input) : Lexer(source) {
 			Token.EOF -> return null
 			else -> unexpected(start, next)
 		}
+		takeSpace()
 		val returnTy = parseTy()
+		takeSpace()
 		val name = takeName()
 		takeLparen()
-		val parameters = if (tryTakeRparen()) Arr.empty() else buildUntilNull(this::parseParameter)
+		val parameters =
+			if (tryTakeRparen())
+				Arr.empty()
+			else {
+				val first = parseJustParameter()
+				buildUntilNullWithFirst(first, this::parseParameter)
+			}
+		takeIndent()
 		val body = parseBlock()
 		return Method(locFrom(start), isStatic, returnTy, name, parameters, body)
 	}
@@ -75,6 +124,10 @@ private class Parser(source: Input) : Lexer(source) {
 			return null
 		takeComma()
 		takeSpace()
+		return parseJustParameter()
+	}
+
+	private fun parseJustParameter(): Method.Parameter {
 		val start = curPos()
 		val ty = parseTy()
 		takeSpace()
@@ -84,7 +137,7 @@ private class Parser(source: Input) : Lexer(source) {
 
 	private fun parseTy(): Ty {
 		val start = curPos()
-		val name = takeName()
+		val name = takeTyName()
 		//TODO: generics
 		return Ty.Access(locFrom(start), name)
 	}
@@ -111,10 +164,6 @@ private class Parser(source: Input) : Lexer(source) {
 		object EndNestedBlock : Next()
 		object CtxEnded : Next()
 	}
-
-
-
-
 
 	private fun parseBlock(): Expr {
 		val (start, next) = posNext()
@@ -174,7 +223,8 @@ private class Parser(source: Input) : Lexer(source) {
 
 		var loopStart = exprStart
 		var loopNext = startToken
-		fun<T> notExpected(): T = unexpected(loopStart, loopNext)
+		fun notExpected(): Nothing =
+			unexpected(loopStart, loopNext)
 		fun readAndLoop() {
 			loopStart = curPos()
 			loopNext = nextToken()
@@ -187,7 +237,7 @@ private class Parser(source: Input) : Lexer(source) {
 				Token.Equals -> {
 					val loc = locFrom(loopStart)
 					if (ctx != Ctx.Line)
-						notExpected<Unit>()
+						notExpected()
 					val pattern = partsToPattern(loc, parts)
 					val (expr, next) = parseExpr(Ctx.ExprOnly)
 					must(next !== Next.CtxEnded, locFrom(loopStart), Err.BlockCantEndInDeclare)
@@ -204,6 +254,19 @@ private class Parser(source: Input) : Lexer(source) {
 					} else {
 						TODO("?")
 					}
+				}
+
+				Token.Newline, Token.Dedent -> {
+					val next = when (ctx) {
+						Ctx.Line, Ctx.ExprOnly ->
+							when (loopCurrentToken) {
+								Token.Newline -> Next.NewlineAfterStatement
+								Token.Dedent -> Next.CtxEnded
+								else -> TODO() //should be unreachable
+							}
+						else -> notExpected()
+					}
+					return ExprRes(finishRegular(), next)
 				}
 
 				else -> {
@@ -225,7 +288,7 @@ private class Parser(source: Input) : Lexer(source) {
 
 
 private fun partsToPattern(loc: Loc, parts: MutableList<Expr>): Pattern {
-	fun<T> fail(): T =
+	fun fail(): Nothing =
 		raise(loc, Err.PrecedingEquals)
 	fun partToPattern(part: Expr): Pattern =
 		when (part) {

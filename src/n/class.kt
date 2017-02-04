@@ -8,12 +8,15 @@ class Module(
 	val path: Path,
 	/** Actual resolved path, e.g. "a/b.nz" or "a/b/main.nz" */
 	val fullPath: Path,
+	val source: String,
+	val imports: Arr<Module>,
 	val klass: NzClass) {
 
-	val imports: Arr<Module> by Late()
+	val name: Sym
+		get() = klass.name
 }
 
-sealed class Ty {
+sealed class Ty : Member() {
 	// This should be available at initialization.
 	abstract fun javaTypeName(): String
 
@@ -26,72 +29,146 @@ sealed class Ty {
 }
 
 class NzClass(val name: Sym, val head: Head, val members: Lookup<Sym, Member>) : Ty() {
-	//typeParameters: Arr<T>?
-	//slotsOrEnum
+	override fun javaTypeName(): String =
+		TODO()
+
+	override fun javaType(): Class<*> {
+		TODO()
+	}
 
 	//TODO: collect data: isType, isGeneric
 	sealed class Head {
-		data class Record(val loc: Loc, val vars: Arr<Var>) : Head() {
-			data class Var(val loc: Loc, val mutable: Bool, val ty: Ty, val name: Sym) {
-			}
-		}
+		//Note: vars will also be stored in the 'members' table.
+		data class Record(val loc: Loc, val vars: Arr<Slot>) : Head()
 	}
 }
 
 sealed class Member
-class Method(val isStatic: Bool, val returnTy: Ty, val parameters: Arr<Parameter>) : Member() {
+class Method(val loc: Loc, val name: Sym, val isStatic: Bool, val returnTy: Ty, val parameters: Arr<Parameter>) : Member() {
 	val body: Expr by Late()
 
-	class Parameter(val ty: Ty, val name: Sym)
+	val arity
+		get() = parameters.size
+
+	class Parameter(val loc: Loc, val ty: Ty, val name: Sym)
 }
+data class Slot(val loc: Loc, val mutable: Bool, val ty: Ty, val name: Sym) : Member()
 
 
 sealed class Expr {
 	abstract val loc: Loc
+	abstract fun ty(): Ty
 }
 sealed class Pattern {
 	/** A `_` pattern. */
 	class Ignore(val loc: Loc) : Pattern()
-	class Single(val ty: Ty, val name: Sym) : Pattern()
+	class Single(val loc: Loc, val ty: Ty, val name: Sym) : Pattern()
 	class Destruct(val loc: Loc, val destructedInto: Arr<Pattern>) : Pattern()
 }
-class Let(override val loc: Loc, val assigned: Pattern, val value: Expr, val then: Expr): Expr()
-class Seq(override val loc: Loc, val action: Expr, val then: Expr) : Expr()
+
+sealed class Access : Expr() {
+	abstract val name: Sym
+
+	data class Parameter(override val loc: Loc, val param: Method.Parameter) : Access() {
+		override fun ty() = param.ty
+		override val name
+			get() = param.name
+	}
+	data class Local(override val loc: Loc, val local: Pattern.Single) : Access() {
+		override fun ty() = local.ty
+		override val name
+			get() = local.name
+	}
+}
+
+class Let(override val loc: Loc, val assigned: Pattern, val value: Expr, val then: Expr): Expr() {
+	override fun ty() = then.ty()
+}
+class Seq(override val loc: Loc, val action: Expr, val then: Expr) : Expr() {
+	override fun ty() = then.ty()
+}
+
 //???
-class Value(override val loc: Loc, val value: Any) : Expr()
-class Call(override val loc: Loc, val target: Expr, val arguments: Arr<Expr>) : Expr()
-class GetProperty(override val loc: Loc, val target: Expr, val name: Sym) : Expr()
+class Value(override val loc: Loc, val value: Any) : Expr() {
+	override fun ty() = TODO()
+}
+class Call(override val loc: Loc, val target: Expr, val arguments: Arr<Expr>) : Expr() {
+	override fun ty(): Ty {
+		TODO()
+		//val x = target.ty() as GenInst
+		//val (klass, args) = x
+		//assert(klass == FnClass)
+		//args.first()
+	}
+}
+
+class MethodCall(override val loc: Loc, val target: Expr, val method: Method, val args: Arr<Expr>) : Expr() {
+	init {
+		assert(!method.isStatic)
+	}
+
+	override fun ty(): Ty =
+		method.returnTy
+}
+
+class GetSlot(override val loc: Loc, val target: Expr, val slot: Slot) : Expr() {
+	init {
+		assert(!slot.mutable)
+	}
+
+	override fun ty(): Ty =
+		slot.ty
+}
+
+/*class GetProperty(override val loc: Loc, val target: Expr, val name: Sym) : Expr() {
+	override fun ty(): Ty {
+		val x = target.ty()
+		TODO()
+	}
+}*/
+
+
+
+
+
 
 //TODO
 //This may be a *non-generic* Class, or an instantiation of a generic class.
 //Function type literals (`Bool -> Int`) should compile to instantiations of the Fun class.
 //sealed class Ty
 
-class GenInst(val klass: NzClass, val args: Arr<Ty>)
+class GenInst(val klass: NzClass, val args: Arr<Ty>) : Ty() {
+	override fun javaTypeName() = klass.javaTypeName()
+	override fun javaType() = klass.javaType()
+}
 
-sealed class Primitive(nameStr: String) : Ty() {
+sealed class Prim(nameStr: String) : Ty() {
+	companion object {
+		val all: Arr<Prim> = Arr.of(Bool, Float, Int, Str, Void)
+	}
+
 	val name: Sym = nameStr.sym
 
-	object Bool : Primitive("Bool") {
+	object Bool : Prim("Bool") {
 		override fun javaTypeName() = "Z"
 		override fun javaType() = java.lang.Boolean.TYPE
 		override fun returnOpcode() = Opcodes.IRETURN
 	}
-	object Float : Primitive("Float") {
+	object Float : Prim("Float") {
 		override fun javaTypeName() = "D"
 		override fun javaType() = java.lang.Double.TYPE
 		override fun returnOpcode() = Opcodes.DRETURN
 	}
-	object Int : Primitive("Int") {
+	object Int : Prim("Int") {
 		override fun javaTypeName() = "I"
 		override fun javaType() = java.lang.Integer.TYPE
 		override fun returnOpcode() = Opcodes.IRETURN
 	}
-	object Str : Primitive("String") {
+	object Str : Prim("String") {
 		override fun javaTypeName() = "java/lang/String"
 		override fun javaType() = String::class.java
 	}
-	object Void : Primitive("Void") {
+	object Void : Prim("Void") {
 		override fun javaTypeName() = "V"
 		// Void should never be used as a parameter type.
 		override fun javaType() = throw NotImplementedError()
@@ -99,6 +176,7 @@ sealed class Primitive(nameStr: String) : Ty() {
 	}
 }
 
+/*
 sealed class GenVar : Ty() {
 	override fun javaType() = TODO() //???
 
@@ -109,6 +187,7 @@ sealed class GenVar : Ty() {
 		override fun javaTypeName() = origin.name.str
 	}
 }
+*/
 
 /**
 Origin for something that was explicitly written down

@@ -3,10 +3,18 @@ package compile.parse
 import ast.LiteralValue
 import u.*
 import compile.err.*
+import kotlin.text.slice
 
-internal abstract class Lexer(private val source: Input) {
-	private var peek: Char = source.readChar()
-	private var pos: Pos = startPos
+private val EOF: Char = (-1).toChar()
+
+internal abstract class Lexer(preSource: String) {
+	//Ensure ends in newline
+	//Ensure last character is EOF
+	private val source = (if (preSource.endsWith("\n")) preSource else preSource + "\n") + EOF
+
+	// Index of the character we are *about* to take.
+	private var pos = 0
+
 	private var indent: Int = 0
 	// Number of Token.Dedent we have to output before continuing to read
 	private var dedenting: Int = 0
@@ -22,17 +30,12 @@ internal abstract class Lexer(private val source: Input) {
 	protected fun locFrom(start: Pos): Loc =
 		Loc(start, pos)
 
-	private fun incrPos() {
-		pos = pos.incr()
-	}
-
-	private fun read(): Char =
-		source.readChar()
+	private val peek
+		get() = source[pos]
 
 	private fun readChar(): Char =
-		returning(peek) {
-			peek = read()
-			incrPos()
+		returning(source[pos]) {
+			pos++
 		}
 
 	private fun skip() {
@@ -40,33 +43,14 @@ internal abstract class Lexer(private val source: Input) {
 	}
 
 	private inline fun skipWhile(pred: Pred<Char>) {
-		require(!pred(Input.EOF)) // Else this will be an infinite loop
+		require(!pred(EOF)) // Else this will be an infinite loop
 		if (pred(peek)) {
-			peek = run {
+			run {
 				var ch: Char
 				do {
-					ch = source.readChar()
-					incrPos()
+					pos += 1
+					ch = source[pos]
 				} while (pred(ch))
-				ch
-			}
-		}
-	}
-
-	private inline fun bufferWhile(addChar: Action<Char>, pred: Pred<Char>) {
-		if (pred(peek)) {
-			addChar(peek);
-			// Returns the first char that's not skipped.
-			peek = run {
-				//TODO:NEATER?
-				var ch: Char
-				while (true) {
-					ch = source.readChar()
-					incrPos()
-					if (!pred(ch))
-						break
-					addChar(ch)
-				}
 				ch
 			}
 		}
@@ -77,7 +61,7 @@ internal abstract class Lexer(private val source: Input) {
 
 	data class QuotePart(val text: String, val isEndOfQuote: Bool)
 	protected fun nextQuotePart(): QuotePart {
-		val (text, isEnd) = buildStringFromCharsAndReturn { addChar ->
+		val (text, isEnd) = buildStringFromChars { addChar ->
 			var isEnd: Bool
 			outer@ while (true) {
 				val ch = readChar()
@@ -103,8 +87,26 @@ internal abstract class Lexer(private val source: Input) {
 		return QuotePart(text, isEnd)
 	}
 
+
+	//TODO: just slice!
+	private inline fun bufferWhile(addChar: Action<Char>, pred: Pred<Char>) {
+		if (pred(peek)) {
+			addChar(peek);
+			// Returns the first char that's not skipped.
+			//TODO:NEATER?
+			var ch: Char
+			while (true) {
+				ch = source[pos]
+				pos += 1
+				if (!pred(ch))
+					break
+				addChar(ch)
+			}
+		}
+	}
+
 	private fun takeNumber(negate: Bool, fst: Char): Token {
-		val (str, isFloat) = buildStringFromCharsAndReturn { addChar ->
+		val (str, isFloat) = buildStringFromChars { addChar ->
 			addChar(fst)
 			bufferWhile(addChar, ::isDigit)
 			returning (peek == '.') { isFloat ->
@@ -128,19 +130,15 @@ internal abstract class Lexer(private val source: Input) {
 		return Token.Literal(value)
 	}
 
-	private inline fun buildSymbol(first: Char, pred: Pred<Char>): Sym =
-		buildStringFromChars { addChar ->
-			addChar(first)
-			bufferWhile(addChar, pred)
-		}.sym
-
-	private inline fun takeNameToken(first: Char, pred: Pred<Char>, makeToken: (Sym) -> Token): Token {
-		val name = buildSymbol(first, pred)
-		return Token.Kw.opKeyword(name) ?: makeToken(name)
+	private inline fun buildSymbol(startPos: Int, pred: Pred<Char>): Sym {
+		while (pred(peek)) {
+			pos++
+		}
+		return source.slice(startPos until pos).sym
 	}
 
-	private fun takeOperator(ch: Char): Token =
-		takeNameToken(ch, ::isOperatorChar) { Token.Operator(it) }
+	private fun takeOperator(startPos: Int): Token =
+		takeNameToken(startPos, ::isOperatorChar) { Token.Operator(it) }
 
 	private inline fun countWhile(pred: Pred<Char>): Int {
 		var count = 0
@@ -188,9 +186,10 @@ internal abstract class Lexer(private val source: Input) {
 	}
 
 	private fun takeNext(): Token {
+		val startPos = pos
 		val ch = readChar()
 		return when (ch) {
-			Input.EOF -> {
+			EOF -> {
 				// Remember to dedent before finishing
 				if (indent != 0) {
 					indent--
@@ -227,7 +226,7 @@ internal abstract class Lexer(private val source: Input) {
 				if (isDigit(next))
 					takeNumber(true, next)
 				else
-					takeOperator(ch)
+					takeOperator(startPos)
 			}
 
 			'.' ->
@@ -251,16 +250,32 @@ internal abstract class Lexer(private val source: Input) {
 			in '0' .. '9' ->
 				takeNumber(false, ch)
 			in 'a' .. 'z' ->
-				takeNameToken(ch, ::isNameChar) { Token.Name(it) }
+				takeNameToken(startPos, ::isNameChar) { Token.Name(it) }
 			in 'A' .. 'Z' ->
-				takeNameToken(ch, ::isNameChar) { Token.TyName(it) }
+				takeNameToken(startPos, ::isNameChar) { Token.TyName(it) }
 			'@', '+', '*', '/', '^', '?', '<', '>', '=' ->
-				takeOperator(ch)
+				takeOperator(startPos)
 
 			else ->
-				raise(Loc.singleChar(pos), Err.UnrecognizedCharacter(ch))
+				raise(Loc.singleChar(startPos), Err.UnrecognizedCharacter(ch))
 		}
 	}
+
+	protected fun tryTakeNewline(): Bool {
+		if (!tryTake('\n')) {
+			return false
+		}
+
+		// Allow many blank lines.
+		while (tryTake('\n')) {}
+
+		repeat(this.indent) {
+			expectCharacter('\t')
+		}
+
+		return true
+	}
+
 
 	protected fun takeSpace() {
 		expectCharacter(' ')
@@ -272,6 +287,20 @@ internal abstract class Lexer(private val source: Input) {
 		expectCharacter(',')
 	}
 	protected fun tryTakeRparen(): Bool = tryTake(')')
+	protected fun tryTakeDot(): Bool = tryTake('.')
+
+	protected fun takeKeyword(kw: Token.Kw) {
+		val start = curPos()
+		val name = takeName()
+		if (name != kw.name) {
+			raise(locFrom(start), Err.ExpectedKeyword(kw))
+		}
+	}
+
+	private inline fun takeNameToken(startPos: Int, pred: Pred<Char>, makeToken: (Sym) -> Token): Token {
+		val name = buildSymbol(startPos, pred)
+		return Token.Kw.opKeyword(name) ?: makeToken(name)
+	}
 
 	private fun tryTake(ch: Char): Bool {
 		if (peek == ch) {
@@ -281,9 +310,23 @@ internal abstract class Lexer(private val source: Input) {
 		return false
 	}
 
+	protected fun takeKeyword(): Token.Kw {
+		val start = pos
+		expectCharacter("keyword") { it in 'a' .. 'z' }
+		val name = buildSymbol(start, ::isNameChar)
+		return Token.Kw.opKeyword(name) ?: unexpected(start, Token.Name(name))
+	}
+
 	protected fun takeName(): Sym {
-		val ch = expectCharacter("name") { it in 'a' .. 'z' }
-		return buildSymbol(ch, ::isNameChar)
+		val start = pos
+		expectCharacter("non-type name") { it in 'a' .. 'z' }
+		return buildSymbol(start, ::isNameChar)
+	}
+
+	protected fun takeTyName(): Sym {
+		val start = pos
+		expectCharacter("type name") { it in 'A' .. 'Z' }
+		return buildSymbol(start, ::isNameChar)
 	}
 
 	protected fun takeIndent() {
@@ -293,6 +336,7 @@ internal abstract class Lexer(private val source: Input) {
 			expectCharacter('\t')
 		}
 	}
+
 
 	data class PosNext(val pos: Pos, val next: Token)
 	protected fun posNext(): PosNext {
@@ -311,15 +355,15 @@ internal abstract class Lexer(private val source: Input) {
 	private fun expectCharacter(char: Char): Unit {
 		val ch = readChar()
 		if (ch != char)
-			raise<Unit>(Loc.singleChar(pos), Err.UnexpectedCharacter(ch, "'$char'"))
-	}
-	private fun expectCharacter(explanation: String, pred: (Char) -> Bool): Char {
-		val ch = readChar()
-		if (!pred(ch))
-			raise<Unit>(Loc.singleChar(pos), Err.UnexpectedCharacter(ch, explanation))
-		return ch
+			raise(Loc.singleChar(pos), Err.UnexpectedCharacter(ch, "$char"))
 	}
 
-	protected fun<T> unexpected(start: Pos, token: Token): T =
-		raise<T>(locFrom(start), Err.Unexpected(token))
+	private fun expectCharacter(explanation: String, pred: (Char) -> Bool) {
+		val ch = readChar()
+		if (!pred(ch))
+			raise(Loc.singleChar(pos), Err.UnexpectedCharacter(ch, explanation))
+	}
+
+	protected fun unexpected(start: Pos, token: Token): Nothing =
+		raise(locFrom(start), Err.Unexpected(token))
 }

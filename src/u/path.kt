@@ -11,7 +11,7 @@ class Path(private val parts: Arr<Sym>) : HasSexpr {
 	}
 
 	override fun toSexpr() =
-		Sexpr(parts)
+		Sexpr.S(toString().sym)
 
 	override fun toString() =
 		parts.joinToString("/")
@@ -55,6 +55,13 @@ class Path(private val parts: Arr<Sym>) : HasSexpr {
 
 // # of parents, then a path relative to the ancestor
 data class RelPath(val nParents: Int, val relToParent: Path) : HasSexpr {
+	init {
+		assert(nParents > 0)
+	}
+
+	override fun toSexpr() =
+		Sexpr.S(toString().sym)
+
 	override fun toString(): String {
 		val start =
 			when (nParents) {
@@ -65,8 +72,9 @@ data class RelPath(val nParents: Int, val relToParent: Path) : HasSexpr {
 		return start + relToParent.toString()
 	}
 
-	override fun toSexpr() = sexprTuple(Sexpr(nParents), relToParent)
-
 	val isParentsOnly: Bool
 		get() = relToParent.isEmpty
+
+	val last: Sym
+		get() = relToParent.last
 }

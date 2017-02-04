@@ -53,7 +53,7 @@ fun<K, V> HashMap<K, V>.tryAdd(key: K, value: V): V? =
 			this[key] = value
 	}
 
-fun<K, V> HashMap<K, V>.surelyRemove(key: K) {
+fun<K, V> HashMap<K, V>.mustRemove(key: K) {
 	require(key in this)
 	remove(key)
 }
@@ -137,19 +137,14 @@ class Lookup<K, V> private constructor(private val data: HashMap<K, V>) : Iterab
 	operator fun contains(key: K): Bool =
 		key in data
 
-	fun keys(): Arr<K> =
-		TODO()
+	fun keys(): Iterator<K> =
+		data.iterator().map { it.key }
+
+	fun values(): Iterator<V> =
+		data.iterator().map { it.value }
 
 	override fun iterator(): Iterator<Pair<K, V>> =
-		object : Iterator<Pair<K, V>> {
-			val iter = data.iterator()
-			override fun hasNext() =
-				iter.hasNext()
-			override fun next(): Pair<K, V> {
-				val (k, v) = iter.next()
-				return Pair(k, v)
-			}
-		}
+		data.iterator().map { Pair(it.key, it.value) }
 }
 
 fun<K, V> lookupSexpr(name: String, lookup: Lookup<K, V>, map: (K, V) -> Sexpr) =
@@ -157,3 +152,16 @@ fun<K, V> lookupSexpr(name: String, lookup: Lookup<K, V>, map: (K, V) -> Sexpr) 
 		for ((key, value) in lookup)
 			s(map(key, value))
 	}
+
+
+fun<T, U> Iterator<T>.map(f: (T) -> U): Iterator<U> {
+	val iter = this
+	return object : Iterator<U> {
+		override fun hasNext() =
+			iter.hasNext()
+		override fun next(): U {
+			val a = iter.next()
+			return f(a)
+		}
+	}
+}

@@ -20,21 +20,6 @@ sealed class Token {
 		override fun toString() = "QuoteStart(\"$head\"')"
 	}
 
-
-	abstract class Kw(name: String) : Token() {
-		companion object {
-			private val all = Arr.of(At, AtAt, Backslash, Equals, Import, Underscore, Fun, Def)
-			private val nameToKw = Lookup.fromValues(all, Kw::name)
-			fun opKeyword(name: Sym): Kw? =
-				nameToKw[name]
-		}
-
-		val name = name.sym
-
-		override fun toString() =
-			name.str
-
-	}
 	object At : Kw("@")
 	object AtAt : Kw("@@")
 	object Backslash : Kw("\\")
@@ -46,8 +31,26 @@ sealed class Token {
 	object Slots : Kw("slots")
 	object Val : Kw("val")
 	object Var : Kw("var")
-	object Equals : Kw("=")
-	object Underscore : Kw("_")
+
+	abstract class Kw(name: String) : Token() {
+		companion object {
+			//Just the ones that
+			private val all: Arr<Kw> by lazy {
+				Arr.of(At, AtAt, Backslash, Def, Enum, Fun, Generic, Import, Slots, Val, Var)
+			}
+			private val nameToKw: Lookup<Sym, Kw> by lazy {
+				Lookup.fromValues(all) { it.name }
+			}
+			fun opKeyword(name: Sym): Kw? =
+				nameToKw[name]
+		}
+
+		val name = name.sym
+
+		override fun toString() =
+			name.str
+
+	}
 
 	// Keyword that does *not* resemble an identifier. We want toString() to look nice.
 	abstract class PlainKw(val name: String) : Token() {
@@ -56,6 +59,8 @@ sealed class Token {
 	}
 
 	// Grouping
+	object Underscore : PlainKw("_")
+	object Equals : PlainKw("=")
 	object Indent : PlainKw("->")
 	object Dedent : PlainKw("<-")
 	object Newline : PlainKw("\\n")

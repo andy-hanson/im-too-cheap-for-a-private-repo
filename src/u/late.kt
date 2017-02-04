@@ -21,3 +21,16 @@ class Late<T>() {
 		value = v
 	}
 }
+
+//INITIALIZE TO NULL
+class SingleAssign<T>(var value: T) {
+	operator fun getValue(thisRef: Any?, property: KProperty<*>): T? {
+		return value
+	}
+
+	operator fun setValue(thisRef: Any?, property: KProperty<*>, v: T): Unit {
+		if (value != null)
+			throw Exception("Property ${property.name} already initialized to $value")
+		value = v
+	}
+}

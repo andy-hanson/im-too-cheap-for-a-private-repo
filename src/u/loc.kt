@@ -18,12 +18,13 @@ typealias Pos = Int
 fun Pos.incr(): Pos =
 	this + 1
 
-const val startPos: Pos = 0
-
-class LcPos(val line: Int, val column: Int)
+class LcPos(val line: Int, val column: Int) {
+	override fun toString(): String =
+		"$line:$column"
+}
 class LcLoc(val start: LcPos, val end: LcPos) {
 	companion object {
-		fun from(source: Input, loc: Loc): LcLoc {
+		fun from(source: String, loc: Loc): LcLoc {
 			val start = walkTo(source, startLc, loc.start)
 			val end = walkTo(source, start, loc.end- loc.start)
 			return LcLoc(start, end)
@@ -34,11 +35,11 @@ class LcLoc(val start: LcPos, val end: LcPos) {
 		"$start-$end"
 }
 
-private fun walkTo(source: Input, startPos: LcPos, distanceToWalk: Int): LcPos {
+private fun walkTo(source: String, startPos: LcPos, distanceToWalk: Int): LcPos {
 	var line = startPos.line
 	var column = startPos.column
-	repeat(distanceToWalk) {
-		when (source.readChar()) {
+	repeat(distanceToWalk) { i ->
+		when (source[i]) {
 			'\n' -> {
 				line++
 				column = 1

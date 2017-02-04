@@ -2,58 +2,40 @@ import compile.err.CompileError
 import org.objectweb.asm.*
 import n.*
 import u.*
-import compile.parse.*
+import compile.*
 
-interface CompilerHost {
-	val io: FileInput
-}
+object MockIo : FileInput {
+	private var map = HashMap<Path, String>()
 
-//move
-class Compiler(private val host: CompilerHost) {
-	private var modules = hashMapOf<Path, Module>()
+	override fun read(path: Path) =
+		map[path] ?: throw FileNotFound(path)
 
-	fun lex(path: Path): Arr<LexedEntry> =
-		usePath(path, ::lexToArray)
-
-	fun parse(path: Path): ast.Class =
-		usePath(path) { parseClass(it, path.last) }
-
-	private fun<T> usePath(path: Path, f: (Input) -> T): T =
-		doWork(path) {
-			FileInput.read(host.io, path, f)
-		}
-
-	private fun<T> doWork(fullPath: Path, f: Thunk<T>): T =
-		try {
-			f()
-		} catch (error: CompileError) {
-			error.path = fullPath
-			outputError(error)
-			throw error
-		}
-
-	private fun outputError(error: CompileError) {
-		val message = error.output(this::translateLoc)
-		System.err.println(message)
+	fun set(path: Path, content: String) {
+		map.set(path, content)
 	}
-
-	private fun translateLoc(fullPath: Path, loc: Loc): LcLoc =
-		FileInput.read(host.io, fullPath) { source ->
-			LcLoc.from(source, loc)
-		}
 }
 
-object DumbassIo : FileInput {
-	override fun open(path: Path): Input =
-		StringInput("FOO")
-}
-
-object DumbassHost : CompilerHost {
-	override val io = DumbassIo
+object MockHost : CompilerHost {
+	override val io = MockIo
 }
 
 fun main(args: Array<String>) {
-	val c = Compiler(DumbassHost)
-	val l = c.lex(Path.from("a", "b"))
-	println(l)
+	val h = MockHost
+	h.io.set(Path.from("a", "b.nz"), """
+slots
+	val Int a
+
+fun Int x(Int y)
+	y
+""")
+	val c = Compiler(h)
+	//val l = c.lex(Path.from("a", "b"))
+	//println(l)
+
+	val ast = c.parse(Path.from("a", "b.nz"))
+	println(ast.toSexpr())
+
+
+	c.compile(Path.from("a", "b"))
+
 }

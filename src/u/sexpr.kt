@@ -95,15 +95,6 @@ sealed class Sexpr : HasSexpr {
 		this
 }
 
-//TODO: move to arr.kt
-private fun<T> Arr<T>.sum(magnitude: (T) -> Int): Int {
-	var sum = 0
-	for (element in this)
-		sum += magnitude(element)
-	return sum
-}
-
-
 interface HasSexpr {
 	fun toSexpr(): Sexpr
 }
@@ -135,7 +126,7 @@ inline fun sexpr(name: String, f: SexprBuilder.() -> Unit): Sexpr {
 	return builder.finish()
 }
 
-class SexprBuilder(val name: String) {
+class SexprBuilder(private val name: String) {
 	val parts = mutableListOf<Sexpr>()
 
 	fun s(sexpr: Sexpr) {

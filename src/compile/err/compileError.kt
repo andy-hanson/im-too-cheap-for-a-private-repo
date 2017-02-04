@@ -2,8 +2,28 @@ package compile.err
 
 import u.*
 import compile.parse.Token
+import n.*
 
 sealed class Err {
+	// Module loader
+	class CircularDepdendency(val path: Path) : Err() {
+		override fun toString() =
+			"There is a circular dependency involving $path"
+	}
+
+	class CantFindLocalModuleFromFileOrDirectory(
+		val importPath: RelPath,
+		val filePath: Path,
+		val dirPath: Path)  : Err() {
+		override fun toString() =
+			"Can't find any module $importPath. Tried $filePath and $dirPath."
+	}
+
+	class CantFindLocalModuleFromDirectory(val path: RelPath, val dirPath: Path) : Err()  {
+		override fun toString() =
+			"Can't find any module %relPath. Tried $dirPath."
+	}
+
 	// Lexer
 	object LeadingSpace : Err() {
 		override fun toString() =
@@ -37,12 +57,15 @@ sealed class Err {
 
 	class UnexpectedCharacter(val ch: Char, val expected: String): Err() {
 		override fun toString() =
-			"Expected '$expected', got '$ch'"
+			"Expected '$expected', got '$ch' (character code ${ch.toInt()})"
+	}
+
+	class ExpectedKeyword(val kw: Token.Kw): Err() {
+		override fun toString() =
+			"Expected ${kw.name}"
 	}
 
 	// Parser
-
-
 	object EmptyExpression : Err() {
 		override fun toString() =
 			"This expression is empty."
@@ -59,21 +82,60 @@ sealed class Err {
 	}
 
 	// Checker
+
 	class CantBind(val name: Sym) : Err() {
 		override fun toString() =
 			"WTF is $name?"
 	}
+
+	class NameAlreadyBound(val name: Sym) : Err() {
+		override fun toString() =
+			"$name has already been declared in this scope."
+	}
+
+	class CombineTypes(val a: Ty, val b: Ty) : Err() {
+		override fun toString() =
+			"Can't combine types $a and $b."
+	}
+
+	class NoSuchMember(val containingTy: Ty, val memberName: Sym) : Err() {
+		override fun toString() =
+			"Type $containingTy has no member $memberName"
+	}
+
+	class WrongNumberOfArguments(val method: Method, val argsCount: Int) : Err() {
+		override fun toString() =
+			"Method ${method.name} takes ${method.arity} arguments, got $argsCount"
+	}
+
+	class WrongType(val expected: Ty, val actual: Ty) : Err() {
+		override fun toString() =
+			"Expected a ${expected}, got a ${actual}"
+	}
 }
 
-class CompileError(val loc: Loc, val kind: Err) : Exception() {
+class CompileError(val kind: Err) : Exception() {
+	constructor(loc: Loc, kind: Err) : this(kind) {
+		this.loc = loc
+	}
+
 	constructor(loc: Loc, kind: Err, path: Path) : this(loc, kind) {
 		this.path = path
 	}
 
-	var path: Path by Late()
+	var loc: Loc? by SingleAssign(null)
+	var path: Path? by SingleAssign(null)
 
-	fun output(translateLoc: (Path, Loc) -> LcLoc): String {
-		val lcLoc = translateLoc(path, loc)
-		return "Error at $path $lcLoc: $kind"
-	}
+	fun output(translateLoc: (Path, Loc) -> LcLoc): String =
+		if (loc != null) {
+			val lcLoc = translateLoc(path!!, loc!!)
+			"Error at $path $lcLoc: $kind"
+		} else
+			kind.toString()
+
+	override fun toString(): String =
+		if (loc != null) {
+			"Error at $path position $loc: $kind"
+		} else
+			kind.toString()
 }

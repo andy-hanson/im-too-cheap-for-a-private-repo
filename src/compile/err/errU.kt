@@ -2,14 +2,17 @@ package compile.err
 
 import u.*
 
-fun<T> raise(loc: Loc, kind: Err): T =
+fun raise(kind: Err): Nothing =
+	throw CompileError(kind)
+
+fun raise(loc: Loc, kind: Err): Nothing =
 	throw CompileError(loc, kind)
 
-fun<T> raiseWithPath(path: Path, loc: Loc, kind: Err): T =
+fun raiseWithPath(path: Path, loc: Loc, kind: Err): Nothing =
 	throw CompileError(loc, kind, path)
 
 fun must(cond: Bool, loc: Loc, kind: Err) {
 	if (!cond)
-		raise<Unit>(loc, kind)
+		raise(loc, kind)
 }
 

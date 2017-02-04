@@ -290,19 +290,3 @@ inline fun<reified T> buildUntilNullWithFirst(first: T, f: Thunk<T?>): Arr<T> =
 		add(first)
 		buildUntilNullWorker(f)
 	}
-
-//TODO:MOVE
-inline fun<T> loopUntilResult(f: Thunk<T?>): T {
-	var res: T
-	loop@while (true) {
-		val resOrNull = f()
-		when (resOrNull) {
-			null -> {}
-			else -> {
-				res = resOrNull
-				break@loop
-			}
-		}
-	}
-	return res
-}

@@ -6,25 +6,35 @@ abstract class Ast() : HasSexpr {
 	abstract val loc: Loc
 }
 
-class Module(
-	override val loc: Loc,
-	val imports: Arr<Import>,
-	val klass: Class) : Ast() {
+class Module(override val loc: Loc, val imports: Arr<Import>, val klass: Klass) : Ast() {
+	override fun toSexpr(): Sexpr =
+		sexpr("Module", sexpr("import", sexpr(imports)), klass)
 
-	override fun toSexpr(): Sexpr = TODO("!!!")
+	class Import(override val loc: Loc, val path: ImportPath) : Ast() {
+		override fun toSexpr() =
+			path.toSexpr()
+
+		sealed class ImportPath : HasSexpr {
+			class Global(val path: Path) : ImportPath() {
+				override fun toSexpr() =
+					path.toSexpr()
+			}
+
+			class Relative(val path: RelPath) : ImportPath() {
+				override fun toSexpr() =
+					path.toSexpr()
+			}
+		}
+	}
 }
 
-class Import(override val loc: Loc, val nParents: Int, val name: Sym) : Ast() {
-	override fun toSexpr() =
-		sexprTuple(Sexpr.N(nParents.toLong()), name)
-}
 
 
 //TODO: may be generic<T>
 //TODO: may be union instead of having state
-data class Class(override val loc: Loc, val name: Sym, val head: Head, val members: Arr<Member>): Ast() {
+data class Klass(override val loc: Loc, val name: Sym, val head: Head, val members: Arr<Member>): Ast() {
 	override fun toSexpr() =
-		sexpr("Class", name)
+		sexpr("Klass", name, head, sexpr(members))
 
 	//Head: may be data+state or union (but not both.)
 	sealed class Head : Ast() {
@@ -43,6 +53,7 @@ data class Class(override val loc: Loc, val name: Sym, val head: Head, val membe
 sealed class Member() : Ast() {
 	abstract val name: Sym
 }
+
 data class Method(
 	override val loc: Loc,
 	val isStatic: Bool,
@@ -52,11 +63,16 @@ data class Method(
 	val body: Expr) : Member() {
 
 	override fun toSexpr() =
-		TODO()
+		sexpr(if (isStatic) "fun" else "def") {
+			s(returnTy)
+			s(name)
+			s(parameters)
+			s(body)
+		}
 
 	data class Parameter(override val loc: Loc, val ty: Ty, val name: Sym) : Ast() {
 		override fun toSexpr(): Sexpr =
-			TODO()
+			sexprTuple(ty, name)
 	}
 }
 
@@ -88,7 +104,7 @@ sealed class Expr : Ast()
 
 data class Access(override val loc: Loc, val name: Sym) : Expr() {
 	override fun toSexpr() =
-		TODO("!")
+		Sexpr.S(name)
 }
 data class Call(override val loc: Loc, val target: Expr, val args: Arr<Expr>) : Expr() {
 	override fun toSexpr() = sexpr("Call") {
@@ -138,11 +154,11 @@ sealed class Pattern : Ast() {
 		override fun toSexpr() =
 			sexpr("Ignore")
 	}
-	class Single(override val loc: Loc, val name: Sym) : Pattern() {
+	data class Single(override val loc: Loc, val name: Sym) : Pattern() {
 		override fun toSexpr() =
 			Sexpr.S(name)
 	}
-	class Destruct(override val loc: Loc, val destructed: Arr<Pattern>) : Pattern() {
+	data class Destruct(override val loc: Loc, val destructed: Arr<Pattern>) : Pattern() {
 		override fun toSexpr() =
 			sexpr(destructed)
 	}

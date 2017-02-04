@@ -3,10 +3,10 @@ package compile.parse
 import u.*
 
 data class LexedEntry(val token: Token, val loc: Loc)
-fun lexToArray(source: Input): Arr<LexedEntry> =
+fun lexToArray(source: String): Arr<LexedEntry> =
 	ArrayLexer(source).go()
 
-private class ArrayLexer(source: Input) : Lexer(source) {
+private class ArrayLexer(source: String) : Lexer(source) {
 	var parts = mutableListOf<LexedEntry>()
 
 	fun go(): Arr<LexedEntry> {
