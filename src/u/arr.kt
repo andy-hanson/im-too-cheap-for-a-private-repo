@@ -6,9 +6,7 @@ import java.util.Arrays
 Immutable array.
 Do *not* call the constructor!
  */
-class Arr<out T> constructor(private val data: Array<out T>) : Iterable<T> {
-	fun toArray(): Array<out T> = data
-
+class Arr<out T> constructor(private val data: Array<out T>) : Collection<T> {
 	companion object {
 		inline fun<reified T> from(c: Collection<T>) = Arr(c.toTypedArray())
 		inline fun<reified T> of(vararg elements: T) = Arr(elements)
@@ -18,10 +16,10 @@ class Arr<out T> constructor(private val data: Array<out T>) : Iterable<T> {
 		inline fun<reified T> init(size: Int, noinline initialize: (Int) -> T) =
 			Arr(Array<T>(size, initialize))
 
-		inline fun<reified T, reified U> fromMapped(c: List<T>, crossinline map: (T) -> U): Arr<U> =
-			init(c.size) { i ->
-				map(c[i])
-			}
+		inline fun<reified T, reified U> fromMapped(c: Array<T>, crossinline map: (T) -> U): Arr<U> =
+			init(c.size) { i -> map(c[i]) }
+		inline fun<T, reified U> fromMapped(c: List<T>, crossinline map: (T) -> U): Arr<U> =
+			init(c.size) { i -> map(c[i]) }
 
 		inline fun<reified T, reified U> fromMappedArray(a: Array<out T>, crossinline map: (T) -> U): Arr<U> =
 			fromMapped(a.asList(), map)
@@ -62,14 +60,12 @@ class Arr<out T> constructor(private val data: Array<out T>) : Iterable<T> {
 	override fun hashCode(): Int =
 		Arrays.hashCode(data)
 
-	val size: Int
+	override val size: Int
 		get() = data.size
 
-	val isEmpty: Bool
-		get() = size == 0
+	override fun isEmpty() = size == 0
 
-	override fun iterator(): Iterator<T> =
-		data.iterator()
+	override fun iterator() = data.iterator()
 
 	val first: T
 		get() = this[0]
@@ -79,6 +75,11 @@ class Arr<out T> constructor(private val data: Array<out T>) : Iterable<T> {
 
 	inline fun<reified U> map(crossinline f: (T) -> U): Arr<U> =
 		Arr.init<U>(size) { i ->
+			f(this[i])
+		}
+
+	inline fun<reified U> mapToArray(crossinline f: (T) -> U): Array<U> =
+		Array<U>(size) { i ->
 			f(this[i])
 		}
 
@@ -159,6 +160,18 @@ class Arr<out T> constructor(private val data: Array<out T>) : Iterable<T> {
 	fun lazyTail() =
 		lazyDrop(1)
 
+	override operator fun contains(element: @UnsafeVariance T) =
+		this.some { it === element }
+
+	override fun containsAll(elements: Collection<@UnsafeVariance T>) =
+		TODO()
+}
+
+inline fun<T> Iterable<T>.some(predicate: (T) -> Bool): Bool {
+	for (element in this)
+		if (predicate(element))
+			return true
+	return false
 }
 
 inline fun<reified T> Arr<T>.mapIfAnyMaps(crossinline f: (T) -> T?): Arr<T>? {
@@ -203,20 +216,6 @@ inline fun<reified T> build(f: ArrayBuilder<T>.() -> Unit): Arr<T> {
 	ArrayBuilder(l).f()
 	return Arr.from(l)
 }
-
-inline fun<reified T, reified U> build2(f: (Action<T>, Action<U>) -> Unit): Pair<Arr<T>, Arr<U>> {
-	val a = mutableListOf<T>()
-	val b = mutableListOf<U>()
-	f({ a.add(it) }, { b.add(it) })
-	return Pair(Arr.from(a), Arr.from(b))
-}
-
-inline fun<reified T, U> buildFromFirstAndMapTail(first: T, arr: Arr<U>, map: (U) -> T): Arr<T> =
-	build {
-		add(first)
-		for (element in arr.lazyTail())
-			add(map(element))
-	}
 
 class ArrayBuilder<T>(private val l: MutableList<T>) {
 	fun add(t: T) {

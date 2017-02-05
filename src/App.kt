@@ -1,8 +1,12 @@
 import compile.err.CompileError
 import org.objectweb.asm.*
+import org.objectweb.asm.util.TraceClassVisitor
 import n.*
 import u.*
 import compile.*
+import compile.emit.*
+
+import java.lang.reflect.*
 
 object MockIo : FileInput {
 	private var map = HashMap<Path, String>()
@@ -15,27 +19,58 @@ object MockIo : FileInput {
 	}
 }
 
-object MockHost : CompilerHost {
+class MockHost() : CompilerHost {
 	override val io = MockIo
 }
 
-fun main(args: Array<String>) {
-	val h = MockHost
-	h.io.set(Path.from("a", "b.nz"), """
+val testSource = """
 slots
 	val Int a
 
 fun Int x(Int y)
-	y
-""")
+	y + y
+"""
+
+object Foo {
+	class A {}
+	class B {}
+}
+
+fun main(args: Array<String>) {
+	test()
+}
+
+fun test() {
+	val h = MockHost()
+	h.io.set(Path.from("a", "b.nz"), testSource)
+
 	val c = Compiler(h)
 	//val l = c.lex(Path.from("a", "b"))
 	//println(l)
 
 	val ast = c.parse(Path.from("a", "b.nz"))
-	println(ast.toSexpr())
+	//println(ast.toSexpr())
 
+	val module = c.compile(Path.from("a", "b"))
+	//println(module.toSexpr())
 
-	c.compile(Path.from("a", "b"))
+	val klass = module.klass
+	val j = klass.jClass
+	//printClass(klass.jClassBytes)
 
+	val x = j.getMethod("x", Builtins.NzInt::class.java)
+	val result = x.invoke(null, Builtins.NzInt(1))
+	println(result)
+
+	//val x = j.getMethod("x")
+	//x.invoke(1)
 }
+
+fun printClass(bytes: ByteArray) {
+	val reader = ClassReader(bytes)
+	val visitor = TraceClassVisitor(java.io.PrintWriter(System.out))
+	reader.accept(visitor, ClassReader.SKIP_DEBUG)
+}
+
+
+

@@ -3,6 +3,7 @@ package compile
 import compile.err.*
 import compile.parse.*
 import compile.check.*
+import compile.emit.*
 import n.*
 import u.*
 
@@ -13,56 +14,63 @@ interface CompilerHost {
 //move
 class Compiler(private val host: CompilerHost) {
 	private var modules = HashMap<Path, Module>()
+	private var classLoader = DynamicClassLoader()
 
-	fun lex(path: Path): Arr<LexedEntry> =
-		doWork(path) {
-			lexToArray(host.io.read(path))
+	fun lex(path: Path): Arr<LexedEntry> {
+		val source = host.io.read(path)
+		return doWork(Module(path, path, source)) {
+			lexToArray(source)
 		}
+	}
 
-	fun parse(path: Path): ast.Module =
-		doWork(path) {
-			parseModule(host.io.read(path), path.last)
+	fun parse(path: Path): ast.Module {
+		val source = host.io.read(path)
+		return doWork(Module(path, path, source)) {
+			parseModule(source, path.last)
 		}
+	}
 
 	fun compile(path: Path): Module {
-		//TODO: might make more sense to linearize *while* we work... or not...
-		val linearized = doWork2 { linearizeModuleDependencies(host.io, path) }
+		//TODO: linearize *while* we work!!!
+		val linearized = linearizeModuleDependencies(host.io, path)
 		return compileSingleModule(linearized)
 	}
 
-	private fun compileSingleModule(linear: LinearizedModule): Module {
-		val (logicalPath, fullPath, source, ast, imported) = linear
-		val importedModules = imported.map(this::compileSingleModule)
-		val klass = makeClass(importedModules, ast.klass)
-		return Module(logicalPath, fullPath, source, importedModules, klass)
-	}
+	private fun compileSingleModule(linear: LinearizedModule): Module =
+		doWork(linear.module) {
+			val (module, ast, imported) = linear
+			val imports = imported.map(this::compileSingleModule)
+			module.imports = imports
 
-	private fun<T> doWork(fullPath: Path, f: () -> T): T =
+			val klass = makeClass(imports, ast.klass)
+			val bytes = classToBytecode(klass, module.lineColumnGetter)
+			klass.jClassBytes = bytes
+			klass.jClass = classLoader.define(klass.javaTypeName, bytes)
+
+			module.klass = klass
+			module
+		}
+
+	private fun<T> doWork(module: Module, f: () -> T): T =
 		try {
 			f()
 		} catch (error: CompileError) {
-			error.path = fullPath
-			outputError(error)
+			error.module = module
 			throw error
 		}
 
-	//TODO:NAME
-	private fun<T> doWork2(f: () -> T): T =
-		try {
-			f()
-		} catch (error: CompileError) {
-			outputError(error)
-			throw error
-		}
 
-	private fun outputError(error: CompileError) {
-		val message = error.output(this::translateLoc)
-		System.err.println(message)
-	}
+	//private fun translateLoc(fullPath: Path, loc: Loc): LcLoc =
+	//	//TODO: Don't do I/O again, cache it. But can't keep it in the module since that won't exist untio after we've parsed...
+	//	//But if there's a parse error, we know what file we came from...
+	//	//For a checker error we should know the module of the file...
+	//	LcLoc.from(host.io.read(fullPath), loc)
+}
 
-	private fun translateLoc(fullPath: Path, loc: Loc): LcLoc =
-		//TODO: Don't do I/O again, cache it. But can't keep it in the module since that won't exist untio after we've parsed...
-		//But if there's a parse error, we know what file we came from...
-		//For a checker error we should know the module of the file...
-		LcLoc.from(host.io.read(fullPath), loc)
+class DynamicClassLoader : ClassLoader {
+	constructor() : super()
+	constructor(parent: ClassLoader) : super(parent)
+
+	fun define(className: String, bytecode: ByteArray): Class<out Any> =
+		super.defineClass(className, bytecode, 0, bytecode.size)
 }

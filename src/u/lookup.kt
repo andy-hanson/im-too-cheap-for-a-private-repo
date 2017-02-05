@@ -15,9 +15,9 @@ object Hm {
 			//TODO:revoke
 		}
 
-	fun<A, K, V> buildFromArr(arr: Arr<A>, getPair: (Int, A) -> Pair<K, V>): HashMap<K, V> =
-		buildWithSize(arr.size) { add ->
-			for ((index, element) in arr.withIndex()) {
+	fun<A, K, V> buildFrom(inputs: Collection<A>, getPair: (Int, A) -> Pair<K, V>): HashMap<K, V> =
+		buildWithSize(inputs.size) { add ->
+			for ((index, element) in inputs.withIndex()) {
 				val (k, v) = getPair(index, element)
 				val alreadyPresent = add(k, v)
 				if (alreadyPresent != null)
@@ -25,19 +25,27 @@ object Hm {
 			}
 		}
 
-	fun<K, V> buildFromKeywsWithIndex(keys: Arr<K>, getValue: (Int, K) -> V): HashMap<K, V> =
-		buildFromArr(keys) { i, key ->
+	fun<K, V> buildFromKeys(keys: Collection<K>, getValue: (Int, K) -> V): HashMap<K, V> =
+		buildFrom(keys) { i, key ->
 			key to getValue(i, key)
 		}
 
-	fun<K, V> buildFromValues(values: Arr<V>, getKey: (V) -> K): HashMap<K, V> =
-		buildFromArr(values) { _, value ->
+	fun<K, V> buildFromValues(values: Collection<V>, getKey: (V) -> K): HashMap<K, V> =
+		buildFrom(values) { _, value ->
 			getKey(value) to value
 		}
 }
 
+fun<K, V> HashMap<K, V>.addOrFail(key: K, value: V, fail: () -> Error) {
+	if (key in this)
+		throw fail()
+	this[key] = value
+}
+
 fun<K, V> HashMap<K, V>.add(key: K, value: V) {
-	require(key !in this)
+	if (key in this) {
+		throw Error("Already have key $key. Current keys: ${this.keys}")
+	}
 	this[key] = value
 }
 
@@ -58,23 +66,18 @@ fun<K, V> HashMap<K, V>.mustRemove(key: K) {
 	remove(key)
 }
 
-class LookupBuilder<K, V> : HashMap<K, V>() {
-	fun addOrFail(key: K, value: V, fail: () -> Error) {
-		if (key in this)
-			throw fail()
-		this[key] = value
-	}
-}
-
 
 /** Immutable hash map. */
-class Lookup<K, V> private constructor(private val data: HashMap<K, V>) : Iterable<Pair<K, V>> {
+class Lookup<K, out V> private constructor(private val data: HashMap<K, V>) : Iterable<Pair<K, V>> {
 	companion object {
+		fun<K, V> of(vararg pairs: Pair<K, V>) =
+			Lookup(hashMapOf(*pairs))
+
 		fun<K, V> empty(): Lookup<K, V> =
 			Lookup(HashMap())
 
-		fun<K, V> beeld(action: LookupBuilder<K, V>.() -> Unit): Lookup<K, V> {
-			val l = LookupBuilder<K, V>()
+		fun<K, V> beeld(action: HashMap<K, V>.() -> Unit): Lookup<K, V> {
+			val l = HashMap<K, V>()
 			l.action()
 			return fromHashMap(l)
 		}
@@ -95,24 +98,24 @@ class Lookup<K, V> private constructor(private val data: HashMap<K, V>) : Iterab
 			return Pair(a, b!!)
 		}
 
-		fun<K, V> fromValues(values: Arr<V>, getKey: (V) -> K) =
+		fun<K, V> fromValues(values: Collection<V>, getKey: (V) -> K) =
 			Lookup(Hm.buildFromValues(values, getKey))
 
-		fun<A, K, V> buildFromArr(arr: Arr<A>, getPair: (Int, A) -> Pair<K, V>): Lookup<K, V> =
-			buildWithSize(arr.size) { tryAdd ->
-				for ((index, element) in arr.withIndex()) {
-					val (k, v) = getPair(index, element)
-					if (tryAdd(k, v) != null)
-						throw Error("Key already in map")
-				}
-			}
+		fun<K, V> fromKeys(keys: Collection<K>, getValue: (Int, K) -> V) =
+			Lookup(Hm.buildFromKeys(keys, getValue))
+
+		fun<A, K, V> buildFrom(inputs: Collection<A>, getPair: (A) -> Pair<K, V>): Lookup<K, V> =
+			buildFromWithIndex(inputs) { _, input -> getPair(input) }
+
+		fun<A, K, V> buildFromWithIndex(inputs: Collection<A>, getPair: (Int, A) -> Pair<K, V>): Lookup<K, V> =
+			Lookup(Hm.buildFrom(inputs, getPair))
 
 		fun<K, V> buildFromKeysWithIndex(keys: Arr<K>, getValue: (Int, K) -> V): Lookup<K, V> =
-			buildFromArr(keys) { i, key -> key to getValue(i, key) }
+			buildFromWithIndex(keys) { i, key -> key to getValue(i, key) }
 
 		fun<K, V> ofKeysAndValues(keys: Arr<K>, values: Arr<V>): Lookup<K, V> {
 			require(keys.sameSize(values))
-			return buildFromArr(keys) { i, key -> key to values[i] }
+			return buildFromWithIndex(keys) { i, key -> key to values[i] }
 		}
 
 		fun<K, V> fromHashMap(hm: HashMap<K, V>): Lookup<K, V> =
@@ -131,28 +134,26 @@ class Lookup<K, V> private constructor(private val data: HashMap<K, V>) : Iterab
 	operator fun get(key: K): V? =
 		data[key]
 
-	fun mustGet(key: K): V =
-		this[key]!!
-
 	operator fun contains(key: K): Bool =
 		key in data
 
-	fun keys(): Iterator<K> =
-		data.iterator().map { it.key }
+	fun keys(): Iterable<K> =
+		data.map { it.key }
 
-	fun values(): Iterator<V> =
-		data.iterator().map { it.value }
+	fun values(): Iterable<V> =
+		data.map { it.value }
 
 	override fun iterator(): Iterator<Pair<K, V>> =
 		data.iterator().map { Pair(it.key, it.value) }
 }
 
-fun<K, V> lookupSexpr(name: String, lookup: Lookup<K, V>, map: (K, V) -> Sexpr) =
-	sexpr(name) {
-		for ((key, value) in lookup)
-			s(map(key, value))
-	}
 
+fun<K, V> Map<K, V>.reverse(): Lookup<@UnsafeVariance V, K> =
+	Lookup.beeld<V, K> {
+		for ((key, value) in this@reverse) {
+			add(value, key)
+		}
+	}
 
 fun<T, U> Iterator<T>.map(f: (T) -> U): Iterator<U> {
 	val iter = this

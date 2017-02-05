@@ -11,10 +11,10 @@ import java.util.*
 Loads modules and produces a linear compilation order.
 https://en.wikipedia.org/wiki/Topological_sorting#Depth-first_search
  */
-internal data class LinearizedModule(val logicalPath: Path, val fullPath: Path, val source: String, val ast: ast.Module, val imports: Arr<LinearizedModule>)
+internal data class LinearizedModule(val module: Module, val ast: ast.Module, val imports: Arr<LinearizedModule>)
 
 internal fun linearizeModuleDependencies(io: FileInput, startPath: Path): LinearizedModule =
-	Linearizer(io).go(null, Loc.zero, RelPath(0, startPath))
+	Linearizer(io).go(null, null, RelPath(0, startPath))
 
 //TODO:NAME
 private class Linearizer(private val io: FileInput) {
@@ -29,11 +29,12 @@ private class Linearizer(private val io: FileInput) {
 		map.add(path)
 
 		val (fullPath, source) = resolve(io, fromPath, fromLoc, rel)
+		val module = Module(path, fullPath, source)
 		val moduleAst =
 			try {
 				parseModule(source, rel.last)
 			} catch (error: CompileError) {
-				error.path = fullPath
+				error.module = module
 				throw error
 			}
 
@@ -53,9 +54,14 @@ private class Linearizer(private val io: FileInput) {
 		//TODO: do this in parallel
 		val importModules = imports.map { go(fullPath, it.loc, it.rel) }
 		// We are linearizing: write out this module after all of its dependencies are written out.
-		return LinearizedModule(path, fullPath, source, moduleAst, importModules)
+		return LinearizedModule(module, moduleAst, importModules)
 	}
 }
+
+//TODO: move this code into compileSingleModule, so we have the module in context and don't need raiseWithPath
+private fun raiseWithPath(_path: Path, loc: Loc, kind: Err): Nothing =
+	throw CompileError(loc, kind)
+
 
 
 //TODO:NAME
@@ -82,7 +88,7 @@ Normally we just add a '.nz' extension, but for directories we try a 'main.nz' i
 private fun resolve(io: FileInput, from: Path?, fromLoc: Loc?, rel: RelPath): Resolved {
 	fun raiseErr(message: Err): Nothing =
 		if (from == null)
-			raise(message)
+			raiseWithPath(Path.empty, Loc.zero, message)
 		else
 			raiseWithPath(from, fromLoc!!, message)
 

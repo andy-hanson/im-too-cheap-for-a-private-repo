@@ -17,9 +17,14 @@ sealed class Sexpr : HasSexpr {
 
 	abstract fun show(indent: Int, builder: StringBuilder): Unit
 
-	class S(val content: Sym) : Sexpr() {
+	class S(val content: String) : Sexpr() {
+		companion object {
+			operator fun invoke(content: Sym) =
+				S(content.str)
+		}
+
 		override fun show(indent: Int, builder: StringBuilder) {
-			builder.append(content.str)
+			builder.append(content)
 		}
 	}
 
@@ -125,6 +130,9 @@ inline fun sexpr(name: String, f: SexprBuilder.() -> Unit): Sexpr {
 	builder.f()
 	return builder.finish()
 }
+inline fun sexpr(name: Sym, f: SexprBuilder.() -> Unit): Sexpr =
+	sexpr(name.str, f)
+
 
 class SexprBuilder(private val name: String) {
 	val parts = mutableListOf<Sexpr>()

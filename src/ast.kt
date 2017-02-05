@@ -38,8 +38,8 @@ data class Klass(override val loc: Loc, val name: Sym, val head: Head, val membe
 
 	//Head: may be data+state or union (but not both.)
 	sealed class Head : Ast() {
-		data class Record(override val loc: Loc, val vars: Arr<Var>) : Head() {
-			data class Var(override val loc: Loc, val mutable: Bool, val ty: Ty, val name: Sym) : Ast() {
+		data class Slots(override val loc: Loc, val vars: Arr<Slot>) : Head() {
+			data class Slot(override val loc: Loc, val mutable: Bool, val ty: Ty, val name: Sym) : Ast() {
 				override fun toSexpr() =
 					sexpr(if (mutable) "var" else "val", ty, name)
 			}
@@ -106,6 +106,11 @@ data class Access(override val loc: Loc, val name: Sym) : Expr() {
 	override fun toSexpr() =
 		Sexpr.S(name)
 }
+
+data class OperatorCall(override val loc: Loc, val left: Expr, val operator: Sym, val right: Expr) : Expr() {
+	override fun toSexpr() = sexprTuple(operator, left, right)
+}
+
 data class Call(override val loc: Loc, val target: Expr, val args: Arr<Expr>) : Expr() {
 	override fun toSexpr() = sexpr("Call") {
 		s(target)

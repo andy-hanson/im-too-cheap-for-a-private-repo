@@ -5,7 +5,7 @@ import u.*
 import n.*
 
 
-internal fun makeClass(imported: Arr<Module>, ast: ast.Klass): NzClass {
+internal fun makeClass(imported: Arr<Module>, ast: ast.Klass): Klass {
 	val baseScope = BaseScope(imported)
 	val klass = makeEmptyClass(baseScope, ast)
 	fillInClass(baseScope, ast, klass)
@@ -13,7 +13,7 @@ internal fun makeClass(imported: Arr<Module>, ast: ast.Klass): NzClass {
 }
 
 private class BaseScope(imported: Arr<Module>) {
-	private val imports: Lookup<Sym, NzClass> = Lookup.buildFromArr(imported) { _, i -> Pair(i.name, i.klass) }
+	private val imports: Lookup<Sym, Klass> = Lookup.buildFrom(imported) { i -> i.name to i.klass }
 
 	fun getTy(ast: ast.Ty): Ty =
 		when (ast) {
@@ -27,47 +27,48 @@ private class BaseScope(imported: Arr<Module>) {
 			}
 		}
 
-	private fun accessTy(loc: Loc, name: Sym): Ty {
-		val klass = imports[name]
-		if (klass != null)
-			return klass
-
-		val builtin = Builtin.allMembers[name] ?: raise(loc, Err.CantBind(name))
-		return when (builtin) {
-			is Ty -> builtin
-			else -> TODO("err")
-		}
-	}
+	private fun accessTy(loc: Loc, name: Sym): Ty =
+		imports[name] ?: Builtin.all[name] ?: raise(loc, Err.CantBind(name))
 }
 
-private fun makeEmptyClass(scope: BaseScope, ast: ast.Klass): NzClass =
+private fun makeEmptyClass(scope: BaseScope, ast: ast.Klass): Klass =
 	EmptyClassMaker(scope).emptyClass(ast)
 private class EmptyClassMaker(private val scope: BaseScope) {
-	fun emptyClass(k: ast.Klass): NzClass {
-		val head = when (k.head) {
-			is ast.Klass.Head.Record -> {
-				NzClass.Head.Record(k.head.loc, k.head.vars.map {
-					val (loc, mutable, ty, name) = it
-					Slot(loc, mutable, getTy(ty), name)
+	fun emptyClass(classAst: ast.Klass): Klass {
+		val (loc, name, headAst, memberAsts) = classAst
+		val klass = Klass(loc, name)
+		val head = when (headAst) {
+			is ast.Klass.Head.Slots -> {
+				Klass.Head.Slots(headAst.loc, headAst.vars.map {
+					val (slotLoc, mutable, ty, slotName) = it
+					Slot(klass, slotLoc, mutable, getTy(ty), slotName)
 				})
 			}
 		}
-		val members = Lookup.beeld<Sym, Member> {
-			for (memberAst in k.members) {
-				val name = memberAst.name
-				addOrFail(name, emptyMember(memberAst)) { Error("Duplicate member name $name") }
+		klass.head = head
+		klass.setMembers(Lookup.beeld<Sym, Member> {
+			fun add(member: Member) {
+				addOrFail(member.name, member) { raise(member.loc, Err.DuplicateMember(member.name)) }
 			}
-		}
-		return NzClass(k.name, head, members)
+
+			for (slot in head.slots) {
+				add(slot)
+			}
+
+			for (memberAst in memberAsts) {
+				add(emptyMember(klass, memberAst))
+			}
+		})
+		return klass
 	}
 
-	private fun emptyMember(m: ast.Member) =
+	private fun emptyMember(klass: Klass, m: ast.Member) =
 		when (m) {
 			is ast.Method -> {
 				val (loc, isStatic, returnTy, name, parameters) = m
-				Method(loc, name, isStatic, getTy(returnTy), parameters.map {
+				MethodWithBody(klass, loc, isStatic, getTy(returnTy), name, parameters.map {
 					val (pLoc, pTy, pName) = it
-					Method.Parameter(pLoc, getTy(pTy), pName)
+					NzMethod.Parameter(pLoc, getTy(pTy), pName)
 				})
 			}
 		}
@@ -76,23 +77,22 @@ private class EmptyClassMaker(private val scope: BaseScope) {
 		scope.getTy(ty)
 }
 
-private fun fillInClass(baseScope: BaseScope, ast: ast.Klass, klass: NzClass) {
+private fun fillInClass(baseScope: BaseScope, ast: ast.Klass, klass: Klass) {
 	for (memberAst in ast.members) {
-		val member = klass.members.get(memberAst.name)
+		val member = klass.getMember(memberAst.name)!!
 		when (memberAst) {
 			is ast.Method -> {
-				checkMethod(baseScope, memberAst, member as Method)
+				val method = member as MethodWithBody
+				method.body = MethodChecker(baseScope, method).checkMethod(method, memberAst)
 			}
 			else -> TODO()
 		}
 	}
 }
 
-private fun checkMethod(baseScope: BaseScope, ast: ast.Method, method: Method) {
-	MethodChecker(baseScope, method).checkMethod(method, ast)
-}
 
 private sealed class Expected {
+	object Void : Expected()
 	class SubTypeOf(val ty: Ty): Expected()
 	class Infer : Expected() {
 		/** Holds the inferred type. Multiple assignments must match. */
@@ -115,7 +115,7 @@ private sealed class Expected {
 
 
 
-private class MethodChecker(private val baseScope: BaseScope, private val method: Method) {
+private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) {
 	//Track scope
 	//Note that the Access stored here will be copied to have its loc changed.
 	private val scope = HashMap<Sym, Access>()
@@ -126,9 +126,8 @@ private class MethodChecker(private val baseScope: BaseScope, private val method
 		}
 	}
 
-	fun checkMethod(method: Method, ast: ast.Method) {
+	fun checkMethod(method: NzMethod, ast: ast.Method): Expr =
 		check(Expected.SubTypeOf(method.returnTy), ast.body)
-	}
 
 	private fun get(loc: Loc, name: Sym): Access {
 		val v = scope[name] ?: raise(loc, Err.CantBind(name))
@@ -138,13 +137,17 @@ private class MethodChecker(private val baseScope: BaseScope, private val method
 		}
 	}
 
-	private fun getProperty(exprAst: ast.GetProperty): Pair<Expr, Member> {
-		val (loc, targetAst, propertyName) = exprAst
+	private fun getProperty(loc: Loc, targetAst: ast.Expr, propertyName: Sym): Pair<Expr, Member> {
 		val (targetTy, target) = checkAndInfer(targetAst)
 		return Pair(target, getMember(loc, targetTy, propertyName))
 	}
 
-	private fun checkCall(callLoc: Loc, method: Method, argAsts: Arr<ast.Expr>): Arr<Expr> {
+	private fun getProperty(exprAst: ast.GetProperty): Pair<Expr, Member> {
+		val (loc, targetAst, propertyName) = exprAst
+		return getProperty(loc, targetAst, propertyName)
+	}
+
+	private fun checkCall(callLoc: Loc, method: NzMethod, argAsts: Arr<ast.Expr>): Arr<Expr> {
 		if (method.arity != argAsts.size)
 			raise(callLoc, Err.WrongNumberOfArguments(method, argAsts.size))
 		return method.parameters.zip(argAsts) { parameter, argAst ->
@@ -152,33 +155,43 @@ private class MethodChecker(private val baseScope: BaseScope, private val method
 		}
 	}
 
+	private fun callMethod(loc: Loc, targetAst: ast.Expr, methodName: Sym, argAsts: Arr<ast.Expr>): MethodCall {
+		val (target, member) = getProperty(loc, targetAst, methodName)
+		return when (member) {
+			is NzMethod -> {
+				val args = checkCall(loc, member, argAsts)
+				MethodCall(loc, target, member, args)
+			}
+			else ->
+				TODO()
+		}
+	}
+
 	private fun check(expected: Expected, exprAst: ast.Expr): Expr =
 		when (exprAst) {
 			is ast.Access -> {
 				val (loc, name) = exprAst
-				returning(get(loc, name)) { checkAny(loc, expected, it.ty()) }
+				returning(get(loc, name)) { checkAny(loc, expected, it.ty) }
+			}
+
+			is ast.OperatorCall -> {
+				val (loc, left, op, right) = exprAst
+				callMethod(loc, left, op, Arr.of(right))
 			}
 
 			is ast.Call -> {
 				val (loc, targetAst, argAsts) = exprAst
 				val x = when (targetAst) {
 					is ast.GetProperty -> {
-						val (target, member) = getProperty(targetAst)
-						when (member) {
-							is Method -> {
-								val args = checkCall(loc, method, argAsts)
-								MethodCall(loc, target, member, args)
-							}
-							else ->
-								TODO()
-						}
+						val (loc2, targetAst2, propertyName) = targetAst //TODO:names
+						callMethod(loc2, targetAst2, propertyName, argAsts)
 					}
 					is ast.Access ->
 						TODO()
 					else ->
 						TODO() // Don't think anything else is allowed here.
 				}
-				returning(x) { checkAny(loc, expected, x.ty()) }
+				returning(x) { checkAny(loc, expected, x.ty) }
 			}
 
 			// If we got here, assume 'Call' did not handle it specially.
@@ -188,13 +201,13 @@ private class MethodChecker(private val baseScope: BaseScope, private val method
 				val x = when (member) {
 					is Slot ->
 						GetSlot(loc, target, member)
-					is Method ->
+					is NzMethod ->
 						//GetMethod ast. When compiling this we'll have to create a class subclassing Function.
 						TODO()
 					else ->
 						TODO()
 				}
-				returning(x) { checkAny(loc, expected, it.ty()) }
+				returning(x) { checkAny(loc, expected, it.ty) }
 			}
 
 			is ast.Let -> {
@@ -209,7 +222,7 @@ private class MethodChecker(private val baseScope: BaseScope, private val method
 
 			is ast.Seq -> {
 				val (loc, firstAst, thenAst) = exprAst
-				val first = check(Expected.SubTypeOf(Prim.Void), firstAst)
+				val first = check(Expected.Void, firstAst)
 				val then = check(expected, thenAst)
 				Seq(loc, first, then)
 			}
@@ -279,13 +292,11 @@ private class MethodChecker(private val baseScope: BaseScope, private val method
 
 private fun getMember(loc: Loc, ty: Ty, name: Sym): Member =
 	when (ty) {
-		is NzClass -> {
-			ty.members[name] ?: raise(loc, Err.NoSuchMember(ty, name))
+		is ClassLike -> {
+			ty.getMember(name) ?: raise(loc, Err.NoSuchMember(ty, name))
 		}
-		is GenInst ->
-			TODO()
-		is Prim ->
-			TODO()
+		//is GenInst ->
+		//	TODO()
 	}
 
 

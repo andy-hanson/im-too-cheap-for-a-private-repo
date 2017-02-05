@@ -83,6 +83,11 @@ sealed class Err {
 
 	// Checker
 
+	class DuplicateMember(val name: Sym) : Err() {
+		override fun toString() =
+			"Duplicate member name $name"
+	}
+
 	class CantBind(val name: Sym) : Err() {
 		override fun toString() =
 			"WTF is $name?"
@@ -103,7 +108,7 @@ sealed class Err {
 			"Type $containingTy has no member $memberName"
 	}
 
-	class WrongNumberOfArguments(val method: Method, val argsCount: Int) : Err() {
+	class WrongNumberOfArguments(val method: NzMethod, val argsCount: Int) : Err() {
 		override fun toString() =
 			"Method ${method.name} takes ${method.arity} arguments, got $argsCount"
 	}
@@ -119,23 +124,11 @@ class CompileError(val kind: Err) : Exception() {
 		this.loc = loc
 	}
 
-	constructor(loc: Loc, kind: Err, path: Path) : this(loc, kind) {
-		this.path = path
+	var loc: Loc by Late()
+	var module: Module by Late()
+
+	override fun toString(): String {
+		val locLineColumn = module.lineColumnGetter.lineAndColumnAtLoc(loc)
+		return "Error at ${module.fullPath} ${locLineColumn}: $kind"
 	}
-
-	var loc: Loc? by SingleAssign(null)
-	var path: Path? by SingleAssign(null)
-
-	fun output(translateLoc: (Path, Loc) -> LcLoc): String =
-		if (loc != null) {
-			val lcLoc = translateLoc(path!!, loc!!)
-			"Error at $path $lcLoc: $kind"
-		} else
-			kind.toString()
-
-	override fun toString(): String =
-		if (loc != null) {
-			"Error at $path position $loc: $kind"
-		} else
-			kind.toString()
 }

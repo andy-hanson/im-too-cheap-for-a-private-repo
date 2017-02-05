@@ -2,143 +2,59 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8ebce50a-f36a-4f2b-9393-bf65db8110dd" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/compile/compiler.kt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/compile/moduleResolution.kt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/Compiler$lex$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/Compiler$outputError$message$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/Compiler$parse$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/Compiler$usePath$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/Compiler.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/CompilerHost.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/DumbassHost.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/DumbassIo.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Access.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ast.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Call.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Class$Head$Record$Var.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Class$Head$Record.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Class$Head.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Class.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Expr.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/GetProperty.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Let.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Literal.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/LiteralValue$Float.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/LiteralValue$Int.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/LiteralValue$Str.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/LiteralValue.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Member.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Method$Parameter.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Method.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Pattern$Destruct.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Pattern$Ignore.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Pattern$Single.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Pattern.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Seq.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty$Access.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty$Inst.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer$takeName$ch$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Kw$Companion$nameToKw$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/GetProperty.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/FileInput$Companion.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Input$Companion.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Input.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/NativeInput.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/StringInput.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/StringUKt$buildStringFromChars$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/StringUKt$buildStringFromCharsAndReturn$returned$1.class" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/compile/emit/byteCodeTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/compile/emit/emit.kt" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/META-INF/kotlin-7.kotlin_module" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Call.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Expr.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Let.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Member.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Method$Parameter.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Method.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Module.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/NzClass.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Destruct.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Ignore.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Single.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Seq.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Ty.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Value.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$build2$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$build2$2.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromArr$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromKeywsWithIndex$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromValues$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LcLoc$Companion.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LcLoc.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LcPos.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$build2$a$1$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$build2$a$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$buildFromArr$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$buildFromKeysWithIndex$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$fromHashMap$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$fromHashMapMapped$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$ofKeysAndValues$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$iterator$1.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LookupKt.class" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/AppKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/AppKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/META-INF/kotlin-7.kotlin_module" afterPath="$PROJECT_DIR$/out/production/kotlin-7/META-INF/kotlin-7.kotlin_module" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Access.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/ast/Access.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Call.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/ast/Call.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Method.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/ast/Method.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Pattern$Single.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/ast/Pattern$Single.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty$Access.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty$Access.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty$Inst.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/ast/Ty$Inst.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/CompileError.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/CompileError.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$BlockCantEndInDeclare.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$BlockCantEndInDeclare.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$EmptyExpression.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$EmptyExpression.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$LeadingSpace.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$LeadingSpace.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$NumberMustHaveDigitsAfterDecimalPoint.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$NumberMustHaveDigitsAfterDecimalPoint.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$PrecedingEquals.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$PrecedingEquals.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$TooMuchIndent.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$TooMuchIndent.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$TrailingSpace.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$TrailingSpace.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$Unexpected.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$Unexpected.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$UnexpectedCharacter.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$UnexpectedCharacter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$UnrecognizedCharacter.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err$UnrecognizedCharacter.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/Err.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/ErrUKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/err/ErrUKt.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ArrayLexer.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ArrayLexer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/CharUKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/CharUKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/LexToArrayKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/LexToArrayKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/LexedEntry.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/LexedEntry.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer$PosNext.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer$PosNext.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer$QuotePart.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer$QuotePart.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Lexer.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt$partsToPattern$$inlined$fromMapped$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt$partsToPattern$$inlined$fromMapped$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt$partsToPattern$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt$partsToPattern$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt$partsToPattern$2.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt$partsToPattern$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/ParseKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Ctx.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Ctx.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$ExprRes.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$ExprRes.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$CtxEnded.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$CtxEnded.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$EndNestedBlock.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$EndNestedBlock.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$NewlineAfterEquals.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$NewlineAfterEquals.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$NewlineAfterStatement.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next$NewlineAfterStatement.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$Next.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$2.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$3.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$4.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$5.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$6.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser$parseExprWithNext$6.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Parser.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$At.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$At.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$AtAt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$AtAt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Backslash.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Backslash.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Colon.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Colon.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Comma.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Comma.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Dedent.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Dedent.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Def.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Def.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Dot.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Dot.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$DotDot.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$DotDot.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$EOF.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$EOF.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Enum.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Enum.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Equals.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Equals.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Fun.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Fun.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Generic.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Generic.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Import.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Import.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Indent.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Indent.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Kw$Companion.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Kw$Companion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Kw.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Kw.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$LCurly.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$LCurly.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Lbracket.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Lbracket.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Literal.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Literal.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Lparen.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Lparen.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Name.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Name.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Newline.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Newline.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Operator.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Operator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$PlainKw.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$PlainKw.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$QuoteStart.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$QuoteStart.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$RCurly.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$RCurly.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Rbracket.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Rbracket.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Rparen.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Rparen.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Slots.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Slots.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$TyName.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$TyName.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Underscore.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Underscore.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Val.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Val.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Var.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token$Var.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/compile/parse/Token.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Call.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Call.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Expr.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Expr.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Let.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Let.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Member.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Member.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Method$Parameter.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Method$Parameter.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Method.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Method.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Module.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Module.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/NzClass.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/NzClass.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Destruct.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Destruct.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Ignore.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Ignore.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Single.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern$Single.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Pattern.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Seq.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Seq.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Ty.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Ty.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/n/Value.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/n/Value.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$Companion$cons$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$Companion$cons$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$Companion$fromMapped$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$Companion$fromMapped$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$Companion$rcons$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$Companion$rcons$1.class" />
@@ -149,8 +65,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$partialZip$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$partialZip$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$zip$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr$zip$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Arr.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$build2$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$build2$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$build2$2.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$build2$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$buildAndReturn$res$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$buildAndReturn$res$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$concat$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$concat$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$mapIfAnyMaps$$inlined$map$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$mapIfAnyMaps$$inlined$map$1.class" />
@@ -158,45 +72,15 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$slice$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt$slice$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrKt.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrayBuilder.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/ArrayBuilder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/AssertKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/AssertKt.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Builder$Continue.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Builder$Continue.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Builder$Done.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Builder$Done.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Builder.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Builder.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/FileInput.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/FileInput.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/FileNotFound.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/FileNotFound.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/FlagsKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/FlagsKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/FnKt$partial$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/FnKt$partial$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/FnKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/FnKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/HasSexpr.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/HasSexpr.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromArr$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromArr$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromKeywsWithIndex$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromKeywsWithIndex$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromValues$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildFromValues$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildWithSize$1$tryAdd$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm$buildWithSize$1$tryAdd$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Hm.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Late.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Late.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LcLoc$Companion.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/LcLoc$Companion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LcLoc.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/LcLoc.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LcPos.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/LcPos.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Loc$Companion.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Loc$Companion.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Loc.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Loc.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LocKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/LocKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$build2$a$1$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$build2$a$1$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$build2$a$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$build2$a$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$buildFromArr$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$buildFromArr$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$buildFromKeysWithIndex$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$buildFromKeysWithIndex$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$fromHashMap$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$fromHashMap$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$fromHashMapMapped$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$fromHashMapMapped$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$ofKeysAndValues$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion$ofKeysAndValues$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$Companion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$iterator$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup$iterator$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Lookup.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/LookupKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/LookupKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/MutableListUKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/MutableListUKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/NativeFileInput.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/NativeFileInput.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/OpUKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/OpUKt.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Path$Companion$from$$inlined$fromMappedArray$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Path$Companion$from$$inlined$fromMappedArray$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Path$Companion.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Path$Companion.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Path$addExtension$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Path$addExtension$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Path.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Path.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/RelPath.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/RelPath.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Sexpr$Companion$invoke$$inlined$map$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Sexpr$Companion$invoke$$inlined$map$1.class" />
@@ -217,32 +101,24 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/SexprKt$sexprTuple$$inlined$fromMappedArray$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/SexprKt$sexprTuple$$inlined$fromMappedArray$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/SexprKt$sexprTuple$$inlined$map$1.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/SexprKt$sexprTuple$$inlined$map$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/SexprKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/SexprKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/StringUKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/StringUKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Sym$Companion.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Sym$Companion.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/Sym.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/Sym.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/SymKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/SymKt.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/kotlin-7/u/TypesKt.class" afterPath="$PROJECT_DIR$/out/production/kotlin-7/u/TypesKt.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App.kt" afterPath="$PROJECT_DIR$/src/App.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ast.kt" afterPath="$PROJECT_DIR$/src/ast.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/builtin.kt" afterPath="$PROJECT_DIR$/src/builtin.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/check/check.kt" afterPath="$PROJECT_DIR$/src/compile/check/check.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/compiler.kt" afterPath="$PROJECT_DIR$/src/compile/compiler.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/err/compileError.kt" afterPath="$PROJECT_DIR$/src/compile/err/compileError.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/err/errU.kt" afterPath="$PROJECT_DIR$/src/compile/err/errU.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/parse/lexToArray.kt" afterPath="$PROJECT_DIR$/src/compile/parse/lexToArray.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/parse/lexer.kt" afterPath="$PROJECT_DIR$/src/compile/parse/lexer.kt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/moduleResolution.kt" afterPath="$PROJECT_DIR$/src/compile/moduleResolution.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/parse/parse.kt" afterPath="$PROJECT_DIR$/src/compile/parse/parse.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/compile/parse/token.kt" afterPath="$PROJECT_DIR$/src/compile/parse/token.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/n/class.kt" afterPath="$PROJECT_DIR$/src/n/class.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/arr.kt" afterPath="$PROJECT_DIR$/src/u/arr.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/fn.kt" afterPath="$PROJECT_DIR$/src/u/fn.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/io.kt" afterPath="$PROJECT_DIR$/src/u/io.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/late.kt" afterPath="$PROJECT_DIR$/src/u/late.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/loc.kt" afterPath="$PROJECT_DIR$/src/u/loc.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/lookup.kt" afterPath="$PROJECT_DIR$/src/u/lookup.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/path.kt" afterPath="$PROJECT_DIR$/src/u/path.kt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/sexpr.kt" afterPath="$PROJECT_DIR$/src/u/sexpr.kt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/u/stringU.kt" afterPath="$PROJECT_DIR$/src/u/stringU.kt" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -261,47 +137,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="App.kt" pinned="false" current-in-tab="false">
+      <file leaf-file-name="App.kt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="24" column="5" lean-forward="false" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+            <state relative-caret-position="610">
+              <caret line="58" column="6" lean-forward="false" selection-start-line="58" selection-start-column="6" selection-end-line="58" selection-end-column="6" />
               <folding>
-                <element signature="e#0#97#0" expanded="true" />
+                <element signature="e#0#195#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="check.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/compile/check/check.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="282" column="33" lean-forward="true" selection-start-line="282" selection-start-column="33" selection-end-line="282" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="compileError.kt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/compile/err/compileError.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-              <folding>
-                <element signature="e#21#69#0" expanded="true" />
-                <marker date="1486231034763" expanded="false" signature="28:58" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ast.kt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ast.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="56" column="11" lean-forward="false" selection-start-line="56" selection-start-column="11" selection-end-line="56" selection-end-column="11" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -309,8 +152,70 @@
       <file leaf-file-name="class.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/n/class.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="83" column="36" lean-forward="true" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+            <state relative-caret-position="274">
+              <caret line="247" column="17" lean-forward="false" selection-start-line="247" selection-start-column="17" selection-end-line="247" selection-end-column="17" />
+              <folding>
+                <marker date="1486324155427" expanded="false" signature="18:54" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lookup.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/u/lookup.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="415">
+              <caret line="137" column="19" lean-forward="false" selection-start-line="137" selection-start-column="19" selection-end-line="137" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="errU.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/compile/err/errU.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="check.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/compile/check/check.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="30" column="32" lean-forward="false" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="compiler.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/compile/compiler.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="154">
+              <caret line="45" column="37" lean-forward="true" selection-start-line="45" selection-start-column="37" selection-end-line="45" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="builtin.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/builtin.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="66" column="34" lean-forward="false" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="emit.kt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/compile/emit/emit.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="279">
+              <caret line="83" column="67" lean-forward="false" selection-start-line="83" selection-start-column="67" selection-end-line="83" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -322,41 +227,42 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>u.</find>
-      <find>return sexpr</find>
-      <find>build</find>
-      <find>ty</find>
-      <find>private fun take</find>
-      <find>private fun</find>
-      <find>protected fun</find>
-      <find>takekeywro</find>
-      <find>trytakedot</find>
-      <find>trytaked</find>
-      <find>var</find>
-      <find>takeslot</find>
-      <find>parsehead</find>
-      <find>parseblock()</find>
-      <find>parseBlock()</find>
-      <find>loc.zero</find>
-      <find>incrpos</find>
-      <find>EOF</find>
-      <find>got</find>
-      <find>peek</find>
-      <find>bufferwhile</find>
-      <find>.slice</find>
-      <find>import</find>
-      <find>takekeyword</find>
-      <find>takenametoken</find>
-      <find>takename</find>
-      <find>takeName</find>
-      <find>fun&lt;T&gt;</find>
-      <find>hashmapof</find>
-      <find>returnty</find>
+      <find>&quot;!&quot;</find>
+      <find>fun ilo</find>
+      <find>linecolumng</find>
+      <find>class klass</find>
+      <find>class methodd</find>
+      <find>Loc(0</find>
+      <find>class member</find>
+      <find>array&lt;</find>
+      <find>Pair(</find>
+      <find>add(</find>
+      <find>lookupbuilder</find>
+      <find>buildfromvalues</find>
+      <find>fromvalues</find>
+      <find>buildfrom</find>
+      <find>buildfromwithinde</find>
+      <find>class method</find>
+      <find>class nzmethod</find>
+      <find>returnopcode</find>
+      <find>annotation</find>
+      <find>type.</find>
+      <find>getdeclare</find>
+      <find>operator</find>
+      <find>getproperty</find>
+      <find>builtins</find>
+      <find>call</find>
+      <find>@uns</find>
+      <find>contains</find>
+      <find>reverse</find>
+      <find>builtin class</find>
+      <find>println</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -382,35 +288,39 @@
         <option value="$PROJECT_DIR$/src/compile/parse/parseClass.kt" />
         <option value="$PROJECT_DIR$/src/compile/check/scope.kt" />
         <option value="$PROJECT_DIR$/src/compile/parse/token.kt" />
-        <option value="$PROJECT_DIR$/src/u/path.kt" />
         <option value="$PROJECT_DIR$/src/u/late.kt" />
         <option value="$PROJECT_DIR$/src/u/io.kt" />
-        <option value="$PROJECT_DIR$/src/u/loc.kt" />
         <option value="$PROJECT_DIR$/src/compile/parse/lexToArray.kt" />
-        <option value="$PROJECT_DIR$/src/compile/err/errU.kt" />
-        <option value="$PROJECT_DIR$/src/compile/moduleResolution.kt" />
         <option value="$PROJECT_DIR$/src/compile/parse/lexer.kt" />
-        <option value="$PROJECT_DIR$/src/u/arr.kt" />
-        <option value="$PROJECT_DIR$/src/u/sexpr.kt" />
         <option value="$PROJECT_DIR$/src/u/stringU.kt" />
-        <option value="$PROJECT_DIR$/src/compile/parse/parse.kt" />
-        <option value="$PROJECT_DIR$/src/App.kt" />
-        <option value="$PROJECT_DIR$/src/compile/compiler.kt" />
+        <option value="$PROJECT_DIR$/src/u/sexpr.kt" />
+        <option value="$PROJECT_DIR$/src/compile/emit/asmUtils.kt" />
         <option value="$PROJECT_DIR$/src/u/fn.kt" />
-        <option value="$PROJECT_DIR$/src/builtin.kt" />
-        <option value="$PROJECT_DIR$/src/ast.kt" />
-        <option value="$PROJECT_DIR$/src/u/lookup.kt" />
-        <option value="$PROJECT_DIR$/src/n/class.kt" />
-        <option value="$PROJECT_DIR$/src/compile/check/check.kt" />
+        <option value="$PROJECT_DIR$/src/compile/emit/byteCodeTest.kt" />
+        <option value="$PROJECT_DIR$/src/compile/err/errU.kt" />
+        <option value="$PROJECT_DIR$/src/compile/compiler.kt" />
+        <option value="$PROJECT_DIR$/src/compile/emit/byteCodeTest.java" />
+        <option value="$PROJECT_DIR$/src/u/loc.kt" />
+        <option value="$PROJECT_DIR$/src/compile/moduleResolution.kt" />
         <option value="$PROJECT_DIR$/src/compile/err/compileError.kt" />
+        <option value="$PROJECT_DIR$/src/u/arr.kt" />
+        <option value="$PROJECT_DIR$/src/u/path.kt" />
+        <option value="$PROJECT_DIR$/src/ast.kt" />
+        <option value="$PROJECT_DIR$/src/compile/parse/parse.kt" />
+        <option value="$PROJECT_DIR$/src/compile/check/check.kt" />
+        <option value="$PROJECT_DIR$/src/compile/emit/emit.kt" />
+        <option value="$PROJECT_DIR$/src/u/lookup.kt" />
+        <option value="$PROJECT_DIR$/src/builtin.kt" />
+        <option value="$PROJECT_DIR$/src/n/class.kt" />
+        <option value="$PROJECT_DIR$/src/App.kt" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="958" />
-    <option name="y" value="25" />
-    <option name="width" value="962" />
-    <option name="height" value="1052" />
+    <option name="x" value="345" />
+    <option name="y" value="28" />
+    <option name="width" value="1575" />
+    <option name="height" value="1049" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -432,7 +342,7 @@
     </entry>
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -445,7 +355,79 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kotlin-7" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="compile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="emit" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
@@ -712,38 +694,38 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="958" y="25" width="962" height="1052" extended-state="0" />
+    <frame x="345" y="28" width="1575" height="1049" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32832834" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0688905" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4174174" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22735675" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3546875" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3992016" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3992016" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32832834" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -757,24 +739,24 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="ASM" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3546875" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3992016" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32832834" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0688905" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934132" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32932934" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22735675" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -782,7 +764,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -791,83 +773,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ast.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/parse/lexer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3855">
-          <caret line="288" column="30" lean-forward="false" selection-start-line="288" selection-start-column="30" selection-end-line="288" selection-end-column="30" />
-          <folding>
-            <element signature="e#23#103#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/late.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="42" lean-forward="false" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/err/compileError.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="39" column="22" lean-forward="false" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
-          <folding>
-            <element signature="e#21#69#0" expanded="true" />
-            <marker date="1486231034763" expanded="false" signature="28:58" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/err/errU.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/mutableListU.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="9" lean-forward="false" selection-start-line="0" selection-start-column="9" selection-end-line="0" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/parse/charU.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="50" lean-forward="false" selection-start-line="17" selection-start-column="50" selection-end-line="17" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/parse/parse.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="61" column="0" lean-forward="true" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding>
-            <element signature="e#23#67#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ast.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="103" lean-forward="false" selection-start-line="19" selection-start-column="103" selection-end-line="19" selection-end-column="103" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/compile/parse/token.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
@@ -881,7 +786,7 @@
         <state relative-caret-position="3855">
           <caret line="288" column="30" lean-forward="false" selection-start-line="288" selection-start-column="30" selection-end-line="288" selection-end-column="30" />
           <folding>
-            <element signature="e#23#103#0" expanded="true" />
+            <element signature="e#23#103#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -898,8 +803,8 @@
         <state relative-caret-position="570">
           <caret line="39" column="22" lean-forward="false" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
           <folding>
-            <element signature="e#21#69#0" expanded="true" />
-            <marker date="1486231034763" expanded="false" signature="28:58" ph="..." />
+            <element signature="e#21#69#0" expanded="false" />
+            <marker date="1486315918191" expanded="false" signature="28:58" ph="..." />
           </folding>
         </state>
       </provider>
@@ -908,7 +813,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -965,7 +869,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="50" lean-forward="false" selection-start-line="17" selection-start-column="50" selection-end-line="17" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -973,13 +876,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/bin/jdk1.8.0_111/src.zip!/java/lang/Class.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="136" column="12" lean-forward="false" selection-start-line="136" selection-start-column="12" selection-end-line="136" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -991,14 +887,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/path.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/kotlin/io/Closeable.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -1006,34 +894,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/late.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="20" lean-forward="false" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/bin/jdk1.8.0_111/src.zip!/java/io/File.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="274" column="11" lean-forward="false" selection-start-line="274" selection-start-column="11" selection-end-line="274" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/parse/lexToArray.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="23" lean-forward="false" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/loc.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="10" lean-forward="false" selection-start-line="15" selection-start-column="10" selection-end-line="15" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -1046,36 +910,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/err/errU.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="1" lean-forward="true" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/moduleResolution.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="26" column="25" lean-forward="false" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/sexpr.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/compile/parse/lexer.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
           <caret line="63" column="46" lean-forward="false" selection-start-line="63" selection-start-column="46" selection-end-line="63" selection-end-column="46" />
           <folding>
-            <element signature="e#23#103#0" expanded="true" />
+            <element signature="e#23#103#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1084,25 +924,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="24" column="5" lean-forward="false" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#97#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/compiler.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="17" column="22" lean-forward="true" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1113,60 +934,153 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/fn.kt">
+    <entry file="jar://$PROJECT_DIR$/lib/asm-5.1.jar!/org/objectweb/asm/ClassWriter.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="43" lean-forward="false" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
+        <state relative-caret-position="214">
+          <caret line="70" column="49" lean-forward="false" selection-start-line="70" selection-start-column="49" selection-end-line="70" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/u/sexpr.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="112" column="4" lean-forward="false" selection-start-line="112" selection-start-column="4" selection-end-line="112" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/builtin.kt">
+    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/kotlin/jvm/JvmClassMapping.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="25" lean-forward="false" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+        <state relative-caret-position="214">
+          <caret line="94" column="22" lean-forward="false" selection-start-line="94" selection-start-column="22" selection-end-line="94" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/emit/asmUtils.kt" />
+    <entry file="file://$PROJECT_DIR$/src/u/fn.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="3" lean-forward="false" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/emit/byteCodeTest.kt" />
+    <entry file="file://$PROJECT_DIR$/src/compile/emit/byteCodeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="e#259#267#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/moduleResolution.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="90" column="46" lean-forward="false" selection-start-line="90" selection-start-column="46" selection-end-line="90" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/u/loc.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/kotlin/Collections.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="397" column="21" lean-forward="false" selection-start-line="397" selection-start-column="21" selection-end-line="397" selection-end-column="21" />
+        <state relative-caret-position="233">
+          <caret line="63" column="58" lean-forward="true" selection-start-line="63" selection-start-column="42" selection-end-line="63" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/parse/lexToArray.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="26" column="20" lean-forward="false" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/u/path.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="31" lean-forward="false" selection-start-line="40" selection-start-column="31" selection-end-line="40" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/kotlin/collections/Maps.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="285" column="98" lean-forward="true" selection-start-line="285" selection-start-column="98" selection-end-line="285" selection-end-column="98" />
+        <state relative-caret-position="184">
+          <caret line="285" column="51" lean-forward="false" selection-start-line="285" selection-start-column="51" selection-end-line="285" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/err/compileError.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1545">
+          <caret line="105" column="42" lean-forward="false" selection-start-line="105" selection-start-column="41" selection-end-line="105" selection-end-column="42" />
+          <folding>
+            <element signature="e#21#69#0" expanded="false" />
+            <marker date="1486315918191" expanded="false" signature="28:58" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/generated/_Arrays.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="8031" column="44" lean-forward="false" selection-start-line="8031" selection-start-column="44" selection-end-line="8031" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-runtime-sources.jar!/generated/_Collections.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="1276" column="84" lean-forward="true" selection-start-line="1276" selection-start-column="84" selection-end-line="1276" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/u/late.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/bin/jdk1.8.0_111/src.zip!/java/lang/Class.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1493">
+          <caret line="1343" column="18" lean-forward="false" selection-start-line="1343" selection-start-column="18" selection-end-line="1343" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/arr.kt">
+    <entry file="jar://$USER_HOME$/bin/jdk1.8.0_111/src.zip!/java/lang/ClassLoader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+        <state relative-caret-position="184">
+          <caret line="641" column="0" lean-forward="false" selection-start-line="641" selection-start-column="0" selection-end-line="641" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/compile/parse/parse.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="251" column="58" lean-forward="false" selection-start-line="251" selection-start-column="58" selection-end-line="251" selection-end-column="58" />
-          <folding>
-            <element signature="e#23#67#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="369">
+          <caret line="252" column="28" lean-forward="true" selection-start-line="252" selection-start-column="28" selection-end-line="252" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/u/lookup.kt">
+    <entry file="file://$PROJECT_DIR$/src/u/arr.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="55" column="34" lean-forward="false" selection-start-line="55" selection-start-column="34" selection-end-line="55" selection-end-column="34" />
+        <state relative-caret-position="463">
+          <caret line="291" column="0" lean-forward="false" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1174,34 +1088,75 @@
     <entry file="file://$PROJECT_DIR$/src/ast.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
-          <caret line="56" column="11" lean-forward="false" selection-start-line="56" selection-start-column="11" selection-end-line="56" selection-end-column="11" />
+          <caret line="110" column="54" lean-forward="false" selection-start-line="110" selection-start-column="54" selection-end-line="110" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/n/class.kt">
+    <entry file="file://$PROJECT_DIR$/src/compile/emit/emit.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="83" column="36" lean-forward="true" selection-start-line="83" selection-start-column="36" selection-end-line="83" selection-end-column="36" />
+        <state relative-caret-position="279">
+          <caret line="83" column="67" lean-forward="false" selection-start-line="83" selection-start-column="67" selection-end-line="83" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/compiler.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="45" column="37" lean-forward="true" selection-start-line="45" selection-start-column="37" selection-end-line="45" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/u/lookup.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="415">
+          <caret line="137" column="19" lean-forward="false" selection-start-line="137" selection-start-column="19" selection-end-line="137" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compile/err/errU.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/compile/check/check.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="282" column="33" lean-forward="true" selection-start-line="282" selection-start-column="33" selection-end-line="282" selection-end-column="33" />
+        <state relative-caret-position="174">
+          <caret line="30" column="32" lean-forward="false" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/compile/err/compileError.kt">
+    <entry file="file://$PROJECT_DIR$/src/builtin.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+        <state relative-caret-position="289">
+          <caret line="66" column="34" lean-forward="false" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/n/class.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="247" column="17" lean-forward="false" selection-start-line="247" selection-start-column="17" selection-end-line="247" selection-end-column="17" />
           <folding>
-            <element signature="e#21#69#0" expanded="true" />
-            <marker date="1486231034763" expanded="false" signature="28:58" ph="..." />
+            <marker date="1486324155427" expanded="false" signature="18:54" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="610">
+          <caret line="58" column="6" lean-forward="false" selection-start-line="58" selection-start-column="6" selection-end-line="58" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#195#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -67,7 +67,7 @@ private class Parser(source: String) : Lexer(source) {
 			Token.Slots -> {
 				takeIndent()
 				val vars = buildUntilNull(this::parseSlot)
-				return Klass.Head.Record(locFrom(start), vars)
+				return Klass.Head.Slots(locFrom(start), vars)
 			}
 			Token.Enum -> {
 				TODO("")
@@ -78,7 +78,7 @@ private class Parser(source: String) : Lexer(source) {
 		}
 	}
 
-	private fun parseSlot(): Klass.Head.Record.Var? {
+	private fun parseSlot(): Klass.Head.Slots.Slot? {
 		val (start, next) = posNext()
 		//TODO: 'take' method
 		val isMutable = when (next) {
@@ -91,7 +91,7 @@ private class Parser(source: String) : Lexer(source) {
 		val ty = parseTy()
 		takeSpace()
 		val name = takeName()
-		return Klass.Head.Record.Var(locFrom(start), isMutable, ty, name)
+		return Klass.Head.Slots.Slot(locFrom(start), isMutable, ty, name)
 	}
 
 	private fun parseMember(): Member? {
@@ -246,11 +246,10 @@ private class Parser(source: String) : Lexer(source) {
 				}
 
 				is Token.Operator -> {
-					val op = Access(locFrom(loopStart), loopCurrentToken.name)
 					return if (anySoFar()) {
 						val left = finishRegular()
 						val (right, next) = parseExpr(ctx)
-						ExprRes(Call(locFrom(exprStart), op, Arr.of(left, right)), next)
+						ExprRes(OperatorCall(locFrom(exprStart), left, loopCurrentToken.name, right), next)
 					} else {
 						TODO("?")
 					}

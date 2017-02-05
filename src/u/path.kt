@@ -38,7 +38,7 @@ class Path(private val parts: Arr<Sym>) : HasSexpr {
 		parent().add(last.mod { it + extension })
 
 	val isEmpty: Bool
-		get() = parts.isEmpty
+		get() = parts.isEmpty()
 
 	fun directory(): Path =
 		Path(parts.rtail())
