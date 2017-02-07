@@ -3,11 +3,12 @@ package u
 class Path(private val parts: Arr<Sym>) : HasSexpr {
 	companion object {
 		val empty = Path(Arr.empty())
+
 		fun resolveWithRoot(root: Path, path: Path): Path =
 			root.resolve(RelPath(0, path))
 
 		fun from(vararg elements: String): Path =
-			Path(Arr.fromMappedArray<String, Sym>(elements) { it.sym }) //TODO: Sym::ofString
+			Path(Arr.fromMappedArray(elements, String::sym))
 	}
 
 	override fun toSexpr() =
@@ -37,7 +38,7 @@ class Path(private val parts: Arr<Sym>) : HasSexpr {
 	fun addExtension(extension: String): Path =
 		parent().add(last.mod { it + extension })
 
-	val isEmpty: Bool
+	val isEmpty: Boolean
 		get() = parts.isEmpty()
 
 	fun directory(): Path =
@@ -50,7 +51,7 @@ class Path(private val parts: Arr<Sym>) : HasSexpr {
 		other is Path && parts.equals(other.parts)
 
 	override fun hashCode() =
-		parts.hashCode()
+		4//parts.hashCode()
 }
 
 // # of parents, then a path relative to the ancestor
@@ -72,7 +73,7 @@ data class RelPath(val nParents: Int, val relToParent: Path) : HasSexpr {
 		return start + relToParent.toString()
 	}
 
-	val isParentsOnly: Bool
+	val isParentsOnly: Boolean
 		get() = relToParent.isEmpty
 
 	val last: Sym

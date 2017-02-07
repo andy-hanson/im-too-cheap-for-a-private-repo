@@ -1,6 +1,5 @@
 package u
 
-fun forbid(condition: Bool) {
+fun forbid(condition: Boolean) {
 	assert(!condition)
 }
-

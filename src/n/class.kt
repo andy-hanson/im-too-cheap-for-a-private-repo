@@ -21,6 +21,9 @@ class Module(
 	var imports: Arr<Module> by Late()
 	var klass: Klass by Late()
 
+	val importsAreResolved
+		get() = (this::imports.getDelegate() as Late<*>).isSet
+
 	val loc
 		get() = Loc(0, source.length)
 
@@ -46,7 +49,7 @@ sealed class Ty : Member() {
 
 //Either a Klass or a BuiltinClass
 sealed class ClassLike : Ty() {
-	abstract fun getMember(name: Sym): Member?
+	abstract operator fun get(name: Sym): Member?
 	abstract val jClass: Class<*>
 
 	override val javaType
@@ -54,7 +57,7 @@ sealed class ClassLike : Ty() {
 }
 
 class BuiltinClass(override val name: Sym, override val jClass: Class<*>) : ClassLike() {
-	var members: Lookup<Sym, Member> by Late()
+	var members: Map<Sym, Member> by Late()
 
 	//TODO: have a source file for builtins
 	override val loc: Loc
@@ -65,7 +68,7 @@ class BuiltinClass(override val name: Sym, override val jClass: Class<*>) : Clas
 	override val javaTypeDescriptor =
 		Type.getDescriptor(jClass)
 
-	override fun getMember(name: Sym) =
+	override fun get(name: Sym) =
 		members[name]
 
 	override fun show() =
@@ -77,11 +80,11 @@ class BuiltinClass(override val name: Sym, override val jClass: Class<*>) : Clas
 
 class Klass(override val loc: Loc, override val name: Sym) : ClassLike() {
 	var head: Head by Late()
-	private var membersMap: Lookup<Sym, Member> by Late()
+	private var membersMap: Map<Sym, Member> by Late()
 	override var jClass: Class<*> by Late()
 	var jClassBytes: ByteArray by Late()
 
-	fun setMembers(members: Lookup<Sym, Member>) { membersMap = members }
+	fun setMembers(members: Map<Sym, Member>) { membersMap = members }
 
 	override val javaTypeName = escapeName(name)
 	override val javaTypeDescriptor =
@@ -89,11 +92,11 @@ class Klass(override val loc: Loc, override val name: Sym) : ClassLike() {
 
 	override fun show() = name.str
 
-	override fun getMember(name: Sym) =
+	override fun get(name: Sym) =
 		membersMap[name]
 
 	val members: Iterable<Member>
-		get() = membersMap.values()
+		get() = membersMap.valuesIter()
 
 	val methods: Iterable<MethodWithBody>
 		get() = members.filterIsInstance<MethodWithBody>()
@@ -125,7 +128,7 @@ sealed class Member : N {
 	abstract val name: Sym
 	abstract val loc: Loc
 }
-sealed class NzMethod(val klass: ClassLike, override val loc: Loc, val isStatic: Bool, val returnTy: Ty, override val name: Sym, val parameters: Arr<Parameter>) : Member() {
+sealed class NzMethod(val klass: ClassLike, override val loc: Loc, val isStatic: Boolean, val returnTy: Ty, override val name: Sym, val parameters: Arr<Parameter>) : Member() {
 	val arity
 		get() = parameters.size
 
@@ -140,13 +143,13 @@ sealed class NzMethod(val klass: ClassLike, override val loc: Loc, val isStatic:
 			sexprTuple(ty, name)
 	}
 }
-class BuiltinMethod(klass: ClassLike, loc: Loc, isStatic: Bool, returnTy: Ty, name: Sym, parameters: Arr<Parameter>) : NzMethod(klass, loc, isStatic, returnTy, name, parameters)
-class MethodWithBody(klass: ClassLike, loc: Loc, isStatic: Bool, returnTy: Ty, name: Sym, parameters: Arr<Parameter>) : NzMethod(klass, loc, isStatic, returnTy, name, parameters) {
+class BuiltinMethod(klass: ClassLike, loc: Loc, isStatic: Boolean, returnTy: Ty, name: Sym, parameters: Arr<Parameter>) : NzMethod(klass, loc, isStatic, returnTy, name, parameters)
+class MethodWithBody(klass: ClassLike, loc: Loc, isStatic: Boolean, returnTy: Ty, name: Sym, parameters: Arr<Parameter>) : NzMethod(klass, loc, isStatic, returnTy, name, parameters) {
 	var body: Expr by Late()
 }
 
 
-data class Slot(val klass: ClassLike, override val loc: Loc, val mutable: Bool, val ty: Ty, override val name: Sym) : Member() {
+data class Slot(val klass: ClassLike, override val loc: Loc, val mutable: Boolean, val ty: Ty, override val name: Sym) : Member() {
 	override fun toSexpr() =
 		sexpr(if (mutable) "var" else "val", ty, name)
 

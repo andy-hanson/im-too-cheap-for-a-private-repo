@@ -4,8 +4,7 @@ import compile.err.*
 import u.*
 import n.*
 
-
-internal fun makeClass(imported: Arr<Module>, ast: ast.Klass): Klass {
+internal fun typeCheck(imported: Arr<Module>, ast: ast.Klass): Klass {
 	val baseScope = BaseScope(imported)
 	val klass = makeEmptyClass(baseScope, ast)
 	fillInClass(baseScope, ast, klass)
@@ -13,7 +12,7 @@ internal fun makeClass(imported: Arr<Module>, ast: ast.Klass): Klass {
 }
 
 private class BaseScope(imported: Arr<Module>) {
-	private val imports: Lookup<Sym, Klass> = Lookup.buildFrom(imported) { i -> i.name to i.klass }
+	private val imports = mapFrom(imported) { import -> import.name to import.klass }
 
 	fun getTy(ast: ast.Ty): Ty =
 		when (ast) {
@@ -46,7 +45,7 @@ private class EmptyClassMaker(private val scope: BaseScope) {
 			}
 		}
 		klass.head = head
-		klass.setMembers(Lookup.beeld<Sym, Member> {
+		klass.setMembers(buildMap<Sym, Member> {
 			fun add(member: Member) {
 				addOrFail(member.name, member) { raise(member.loc, Err.DuplicateMember(member.name)) }
 			}
@@ -79,7 +78,7 @@ private class EmptyClassMaker(private val scope: BaseScope) {
 
 private fun fillInClass(baseScope: BaseScope, ast: ast.Klass, klass: Klass) {
 	for (memberAst in ast.members) {
-		val member = klass.getMember(memberAst.name)!!
+		val member = klass[memberAst.name]!!
 		when (memberAst) {
 			is ast.Method -> {
 				val method = member as MethodWithBody
@@ -293,7 +292,7 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 private fun getMember(loc: Loc, ty: Ty, name: Sym): Member =
 	when (ty) {
 		is ClassLike -> {
-			ty.getMember(name) ?: raise(loc, Err.NoSuchMember(ty, name))
+			ty[name] ?: raise(loc, Err.NoSuchMember(ty, name))
 		}
 		//is GenInst ->
 		//	TODO()

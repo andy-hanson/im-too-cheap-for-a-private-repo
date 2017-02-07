@@ -2,6 +2,7 @@ package compile.emit
 
 import n.*
 import u.*
+import compile.DynamicClassLoader
 import org.objectweb.asm.*
 
 //MOVE
@@ -11,7 +12,13 @@ private val JAVA_VERSION = Opcodes.V1_8
 private val OBJECT = "java/lang/Object"
 private val PUBLIC_FINAL = Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL
 
-fun classToBytecode(klass: Klass, lineColumnGetter: LineColumnGetter): ByteArray =
+internal fun writeClassBytecode(klass: Klass, lineColumnGetter: LineColumnGetter, classLoader: DynamicClassLoader) {
+	val bytes = classToBytecode(klass, lineColumnGetter)
+	klass.jClassBytes = bytes
+	klass.jClass = classLoader.define(klass.javaTypeName, bytes)
+}
+
+private fun classToBytecode(klass: Klass, lineColumnGetter: LineColumnGetter): ByteArray =
 	ClassWriter(ClassWriter.COMPUTE_FRAMES).run {
 		// Concrete class
 		visit(JAVA_VERSION, PUBLIC_FINAL, klass.javaTypeName, /*signature*/null, /*superClass*/OBJECT, /*superInterfaces*/emptyArray())
@@ -48,7 +55,7 @@ private class CodeWriter(method: NzMethod, private var mv: MethodVisitor, privat
 	//private var stackDepth = 0
 	// Param 0 is 'this'
 	private var minDepth = if (method.isStatic) 0 else 1
-	private var paramDepths = Lookup.fromKeys(method.parameters) { i, _ -> minDepth + i }
+	private var paramDepths = mapFromKeys(method.parameters) { i, _ -> minDepth + i }
 	// For N parameters, last parameter is at index N
 	private var nextLocalDepth = minDepth + method.parameters.size
 	private var localDepths = HashMap<Pattern.Single, Int>()

@@ -1,20 +1,20 @@
 package u
 
-import java.util.WeakHashMap
-
-// Maps from a string to itself
-private val table = WeakHashMap<String, Sym>()
+import java.util.concurrent.ConcurrentHashMap
 
 class Sym private constructor(val str: String) : HasSexpr {
 	companion object {
-		fun symOfString(s: String): Sym {
+		private val table = ConcurrentHashMap<String, Sym>()
+
+		fun ofString(s: String): Sym {
 			val entry = table[s]
-			if (entry == null) {
-				val sym = Sym(s)
-				table[s] = sym
-				return sym
-			} else
+			if (entry != null)
 				return entry
+
+			val sym = Sym(s)
+			// In case another thread added the same symbol, use putIfAbsent.
+			// This returns null when the put succeeds, so return `sym` in that case.
+			return table.putIfAbsent(s, sym) ?: sym
 		}
 	}
 
@@ -25,8 +25,8 @@ class Sym private constructor(val str: String) : HasSexpr {
 		Sexpr.S(this)
 
 	fun mod(f: (String) -> String) =
-		Sym(f(str))
+		ofString(f(str))
 }
 
 val String.sym: Sym
-	get() = Sym.symOfString(this)
+	get() = Sym.ofString(this)

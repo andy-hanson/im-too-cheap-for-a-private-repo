@@ -38,8 +38,8 @@ sealed class Token {
 			private val all: Arr<Kw> by lazy {
 				Arr.of(At, AtAt, Backslash, Def, Enum, Fun, Generic, Import, Slots, Val, Var)
 			}
-			private val nameToKw: Lookup<Sym, Kw> by lazy {
-				Lookup.fromValues(all) { it.name }
+			private val nameToKw: Map<Sym, Kw> by lazy {
+				mapFromValues(all, Token.Kw::name)
 			}
 			fun opKeyword(name: Sym): Kw? =
 				nameToKw[name]

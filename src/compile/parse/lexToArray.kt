@@ -35,7 +35,7 @@ private class ArrayLexer(source: String) : Lexer(source) {
 	}
 
 	// Returns 'true' on EOF
-	private fun lexInQuote(): Bool {
+	private fun lexInQuote(): Boolean {
 		while (true) {
 			//TODO: locNext?
 			val (start, next) = posNext()

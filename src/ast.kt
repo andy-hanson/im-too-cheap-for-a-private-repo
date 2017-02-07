@@ -39,7 +39,7 @@ data class Klass(override val loc: Loc, val name: Sym, val head: Head, val membe
 	//Head: may be data+state or union (but not both.)
 	sealed class Head : Ast() {
 		data class Slots(override val loc: Loc, val vars: Arr<Slot>) : Head() {
-			data class Slot(override val loc: Loc, val mutable: Bool, val ty: Ty, val name: Sym) : Ast() {
+			data class Slot(override val loc: Loc, val mutable: Boolean, val ty: Ty, val name: Sym) : Ast() {
 				override fun toSexpr() =
 					sexpr(if (mutable) "var" else "val", ty, name)
 			}
@@ -56,7 +56,7 @@ sealed class Member() : Ast() {
 
 data class Method(
 	override val loc: Loc,
-	val isStatic: Bool,
+	val isStatic: Boolean,
 	val returnTy: Ty,
 	override val name: Sym,
 	val parameters: Arr<Parameter>,

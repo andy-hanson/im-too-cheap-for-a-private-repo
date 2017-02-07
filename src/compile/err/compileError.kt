@@ -11,17 +11,9 @@ sealed class Err {
 			"There is a circular dependency involving $path"
 	}
 
-	class CantFindLocalModuleFromFileOrDirectory(
-		val importPath: RelPath,
-		val filePath: Path,
-		val dirPath: Path)  : Err() {
+	class CantFindLocalModuleFromFileOrDirectory(val logicalPath: Path, val filePath: Path, val dirPath: Path)  : Err() {
 		override fun toString() =
-			"Can't find any module $importPath. Tried $filePath and $dirPath."
-	}
-
-	class CantFindLocalModuleFromDirectory(val path: RelPath, val dirPath: Path) : Err()  {
-		override fun toString() =
-			"Can't find any module %relPath. Tried $dirPath."
+			"Can't find any module $logicalPath. Tried $filePath and $dirPath."
 	}
 
 	// Lexer

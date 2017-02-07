@@ -6,7 +6,8 @@ import java.nio.charset.StandardCharsets
 class FileNotFound(val path: Path) : Exception("'$path'")
 
 interface FileInput {
-	fun read(path: Path): String
+	// Return null if the file could not be found.
+	fun read(path: Path): String?
 }
 
 class NativeFileInput(val rootDir: Path) : FileInput {

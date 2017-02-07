@@ -1,18 +1,18 @@
-import compile.err.CompileError
 import org.objectweb.asm.*
 import org.objectweb.asm.util.TraceClassVisitor
 import n.*
 import u.*
 import compile.*
-import compile.emit.*
 
-import java.lang.reflect.*
+fun main(args: Array<String>) {
+	test()
+}
 
-object MockIo : FileInput {
-	private var map = HashMap<Path, String>()
+class MockIo() : FileInput {
+	private val map = HashMap<Path, String>()
 
 	override fun read(path: Path) =
-		map[path] ?: throw FileNotFound(path)
+		map[path]
 
 	fun set(path: Path, content: String) {
 		map.set(path, content)
@@ -20,7 +20,7 @@ object MockIo : FileInput {
 }
 
 class MockHost() : CompilerHost {
-	override val io = MockIo
+	override val io = MockIo()
 }
 
 val testSource = """
@@ -30,15 +30,6 @@ slots
 fun Int x(Int y)
 	y + y
 """
-
-object Foo {
-	class A {}
-	class B {}
-}
-
-fun main(args: Array<String>) {
-	test()
-}
 
 fun test() {
 	val h = MockHost()
@@ -61,9 +52,6 @@ fun test() {
 	val x = j.getMethod("x", Builtins.NzInt::class.java)
 	val result = x.invoke(null, Builtins.NzInt(1))
 	println(result)
-
-	//val x = j.getMethod("x")
-	//x.invoke(1)
 }
 
 fun printClass(bytes: ByteArray) {

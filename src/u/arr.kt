@@ -54,8 +54,17 @@ class Arr<out T> constructor(private val data: Array<out T>) : Collection<T> {
 	override fun toString() =
 		"[${joinToString(" ")}]"
 
-	override fun equals(other: Any?): Bool =
-		other is Arr<*> && other.size == size && Arrays.equals(data, other.data)
+	override fun equals(other: Any?): Boolean {
+		if (!(other is Arr<*>))
+			return false
+		if (other.size != size)
+			return false
+		for (i in indices) {
+			if (this[i] != other[i])
+				return false
+		}
+		return true
+	}
 
 	override fun hashCode(): Int =
 		Arrays.hashCode(data)
@@ -66,6 +75,9 @@ class Arr<out T> constructor(private val data: Array<out T>) : Collection<T> {
 	override fun isEmpty() = size == 0
 
 	override fun iterator() = data.iterator()
+
+	val indices: Iterable<Int>
+		get() = 0..size -  1
 
 	val first: T
 		get() = this[0]
@@ -83,40 +95,8 @@ class Arr<out T> constructor(private val data: Array<out T>) : Collection<T> {
 			f(this[i])
 		}
 
-	val indexes: Iterable<Int> =
-		0..(size - 1)
-
-	inline fun<reified U> allZip(other: Arr<U>, f: (T, U) -> Bool): Bool {
-		for (i in indexes)
-			if (!f(this[i], other[i]))
-				return false
-		return true
-	}
-
-	inline fun findIndex(f: Pred<T>): Int? {
-		for (i in indexes)
-			if (f(this[i]))
-				return i
-		return null
-	}
-
-	inline fun<U> findMap(f: (T) -> U?): U? {
-		for (element in this) {
-			val res = f(element)
-			if (res != null)
-				return res
-		}
-		return null
-	}
-
-	fun<U> sameSize(other: Arr<U>): Bool =
+	fun<U> sameSize(other: Arr<U>): Boolean =
 		size == other.size
-
-	inline fun<reified U> eachZip(other: Arr<U>, f: (T, U) -> Unit) {
-		require(sameSize(other))
-		for (i in indexes)
-			f(this[i], other[i])
-	}
 
 	inline fun<reified U, reified Res> zip(other: Arr<U>, crossinline f: (T, U) -> Res): Arr<Res> {
 		require(sameSize(other))
@@ -133,33 +113,6 @@ class Arr<out T> constructor(private val data: Array<out T>) : Collection<T> {
 		}
 	}
 
-	fun single(): T {
-		require(size == 1)
-		return first
-	}
-
-	fun lazySlice(start: Int, end: Int): Iterator<T> {
-		val arr = this
-		return object: Iterator<T> {
-			var i = start
-
-			override fun hasNext() =
-				i != end
-
-			override fun next(): T =
-				returning (arr[i]) {
-					i++
-					assert(i <= end) // Or else someone forgot to call hasNext()
-				}
-		}
-	}
-
-	fun lazyDrop(start: Int) =
-		lazySlice(start, size)
-
-	fun lazyTail() =
-		lazyDrop(1)
-
 	override operator fun contains(element: @UnsafeVariance T) =
 		this.some { it === element }
 
@@ -167,22 +120,11 @@ class Arr<out T> constructor(private val data: Array<out T>) : Collection<T> {
 		TODO()
 }
 
-inline fun<T> Iterable<T>.some(predicate: (T) -> Bool): Bool {
+inline fun<T> Iterable<T>.some(predicate: (T) -> Boolean): Boolean {
 	for (element in this)
 		if (predicate(element))
 			return true
 	return false
-}
-
-inline fun<reified T> Arr<T>.mapIfAnyMaps(crossinline f: (T) -> T?): Arr<T>? {
-	var didReplace = false
-	val mapped = map { element ->
-		val m = f(element)
-		if (m != null)
-			didReplace = true
-		m ?: element
-	}
-	return opIf(!didReplace) { mapped }
 }
 
 inline fun<reified T> Arr<T>.concat(other: Arr<T>) =
@@ -206,14 +148,9 @@ inline fun<reified T> Arr<T>.rtail(): Arr<T> =
 inline fun <reified T> Arr<T>.rtailN(n: Int): Arr<T> =
 	Arr.init(size - n) { this[it] }
 
-
-
-
-
-//TODO: ArrBuild.kt
-inline fun<reified T> build(f: ArrayBuilder<T>.() -> Unit): Arr<T> {
+inline fun<reified T> build(action: ArrayBuilder<T>.() -> Unit): Arr<T> {
 	val l = mutableListOf<T>()
-	ArrayBuilder(l).f()
+	ArrayBuilder(l).action()
 	return Arr.from(l)
 }
 
@@ -228,48 +165,7 @@ class ArrayBuilder<T>(private val l: MutableList<T>) {
 	}
 }
 
-
-inline fun<reified Element, Result> buildAndReturn(f: (Action<Element>) -> Result): Pair<Arr<Element>, Result> {
-	val l = mutableListOf<Element>()
-	val res = f { l.add(it) }
-	return Pair(Arr.from(l), res)
-}
-
-inline fun<reified T> buildLoop(f: Thunk<Pair<T, Bool>>): Arr<T> =
-	build<T> {
-		while (true) {
-			val (element, shouldContinue) = f()
-			add(element)
-			if (!shouldContinue)
-				break
-		}
-	}
-
-sealed class Builder<Element, Result> {
-	class Continue<Element, Result>(val element: Element) : Builder<Element, Result>()
-	class Done<Element, Result>(val result: Result) : Builder<Element, Result>()
-}
-
-inline fun<reified Element, Result> buildLoop0WithFirst(first: Element, f: Thunk<Builder<Element, Result>>): Pair<Arr<Element>, Result> =
-	buildAndReturn { add ->
-		add(first)
-		var res: Result
-		loop@ while (true) {
-			val x = f()
-			when (x) {
-				is Builder.Continue -> {
-					add(x.element)
-				}
-				is Builder.Done -> {
-					res = x.result
-					break@loop
-				}
-			}
-		}
-		res
-	}
-
-inline fun<reified T> ArrayBuilder<T>.buildUntilNullWorker(f: Thunk<T?>): Unit {
+inline fun<reified T> ArrayBuilder<T>.buildUntilNullWorker(f: () -> T?): Unit {
 	while (true) {
 		val x = f()
 		when (x) {
@@ -279,12 +175,12 @@ inline fun<reified T> ArrayBuilder<T>.buildUntilNullWorker(f: Thunk<T?>): Unit {
 	}
 }
 
-inline fun<reified T> buildUntilNull(f: Thunk<T?>): Arr<T> =
+inline fun<reified T> buildUntilNull(f: () -> T?): Arr<T> =
 	build {
 		buildUntilNullWorker(f)
 	}
 
-inline fun<reified T> buildUntilNullWithFirst(first: T, f: Thunk<T?>): Arr<T> =
+inline fun<reified T> buildUntilNullWithFirst(first: T, f: () -> T?): Arr<T> =
 	build {
 		add(first)
 		buildUntilNullWorker(f)

@@ -64,8 +64,7 @@ private fun toBuiltin(jClass: Class<*>): BuiltinClass {
 		}
 
 	val methods = jClass.declaredMethods.mapNotNull { method ->
-		val methodName = unescapeName(method.name)//(method.getDeclaredAnnotation(Name::class.java)?.name ?: method.name).sym
-		println(methodName)
+		val methodName = unescapeName(method.name)
 		val mods = assertModifiers(method.modifiers)
 		if (mods.isPrivate || method.getDeclaredAnnotation(Hid::class.java) != null)
 			return@mapNotNull null
@@ -75,7 +74,7 @@ private fun toBuiltin(jClass: Class<*>): BuiltinClass {
 		}
 		BuiltinMethod(klass, Loc.zero, mods.isStatic, cnvTy(method.returnType), methodName, parameters)
 	}
-	klass.members = Lookup.fromValues(methods) { it.name }
+	klass.members = mapFromValues(methods, BuiltinMethod::name)
 	return klass
 }
 
@@ -90,7 +89,7 @@ inline fun<T, reified U : T> Iterable<T>.findInstance(): U? {
 class Modifiers(val isStatic: Boolean, val isPrivate: Boolean)
 
 fun assertModifiers(modifiers: Int): Modifiers {
-	fun m(modifier: Int) = flagSet(modifiers, modifier)
+	fun m(modifier: Int) = modifiers.hasFlag(modifier)
 
 	forbid(m(Modifier.ABSTRACT))
 	assert(m(Modifier.FINAL))
@@ -107,12 +106,9 @@ fun assertModifiers(modifiers: Int): Modifiers {
 	return Modifiers(m(Modifier.STATIC), m(Modifier.PRIVATE))
 }
 
-private fun flagSet(flags: Int, flag: Int) =
-	(flags and flag) != 0
-
 internal object Builtin {
-	val all: Lookup<Sym, BuiltinClass> =
-		Lookup.buildFrom(Builtins::class.java.classes.asList()) { jClass ->
+	val all: Map<Sym, BuiltinClass> =
+		mapFrom(Builtins::class.java.classes.asList()) { jClass ->
 			val b = toBuiltin(jClass)
 			b.name to b
 		}
