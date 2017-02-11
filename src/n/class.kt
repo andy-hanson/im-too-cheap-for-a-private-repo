@@ -180,23 +180,21 @@ sealed class Pattern : HasSexpr {
 sealed class Access : Expr() {
 	abstract val name: Sym
 
+	override fun toSexpr() =
+		sexpr("Access", name)
+
 	data class Parameter(override val loc: Loc, val param: NzMethod.Parameter) : Access() {
 		override val ty
 			get() = param.ty
 		override val name
 			get() = param.name
-
-		override fun toSexpr() =
-			sexpr("Access", param)
 	}
+
 	data class Local(override val loc: Loc, val local: Pattern.Single) : Access() {
 		override val ty
 			get() = local.ty
 		override val name
 			get() = local.name
-
-		override fun toSexpr() =
-			sexpr("Access", local)
 	}
 }
 
@@ -213,6 +211,16 @@ data class Seq(override val loc: Loc, val action: Expr, val then: Expr) : Expr()
 	override fun toSexpr() = TODO()
 }
 
+data class StaticMethodCall(override val loc: Loc, val method: NzMethod, val args: Arr<Expr>) : Expr() {
+	init {
+		assert(method.isStatic)
+	}
+
+	override val ty
+		get() = method.returnTy
+
+	override fun toSexpr() = TODO()
+}
 
 data class MethodCall(override val loc: Loc, val target: Expr, val method: NzMethod, val args: Arr<Expr>) : Expr() {
 	init {

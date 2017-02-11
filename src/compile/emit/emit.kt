@@ -55,7 +55,7 @@ private class CodeWriter(method: NzMethod, private var mv: MethodVisitor, privat
 	//private var stackDepth = 0
 	// Param 0 is 'this'
 	private var minDepth = if (method.isStatic) 0 else 1
-	private var paramDepths = mapFromKeys(method.parameters) { i, _ -> minDepth + i }
+	private var paramDepths = method.parameters.withIndex().toMap { (i, param) -> param to minDepth + i }
 	// For N parameters, last parameter is at index N
 	private var nextLocalDepth = minDepth + method.parameters.size
 	private var localDepths = HashMap<Pattern.Single, Int>()
@@ -81,6 +81,13 @@ private class CodeWriter(method: NzMethod, private var mv: MethodVisitor, privat
 			is Access.Parameter -> {
 				val param = expr.param
 				mv.visitVarInsn(Opcodes.ALOAD, paramDepths[param]!!)
+			}
+
+			is StaticMethodCall -> {
+				val (_, method, args) = expr
+				for (arg in args)
+					writeExpr(arg)
+				invokeStatic(method.klass.javaTypeName, method.javaName, method.descriptor())
 			}
 
 			is MethodCall -> {
@@ -131,6 +138,10 @@ private class CodeWriter(method: NzMethod, private var mv: MethodVisitor, privat
 
 	private fun putField(typeName: String, fieldName: String, fieldType: String) {
 		mv.visitFieldInsn(Opcodes.PUTFIELD, typeName, fieldName, fieldType)
+	}
+
+	private fun invokeStatic(invokedType: String, methodName: String, descriptor: String) {
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, invokedType, methodName, descriptor, /*isInterface*/false)
 	}
 
 	private fun invokeVirtual(invokedType: String, methodName: String, descriptor: String) {

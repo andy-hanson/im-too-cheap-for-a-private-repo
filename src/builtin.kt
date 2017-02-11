@@ -1,13 +1,18 @@
 import u.*
 import n.*
-import java.lang.reflect.Modifier
+import java.lang.reflect.*
 
 private annotation class Name(val name: String)
-private annotation class Hid()
+annotation class Hid() //TODO:PRIVATE
 
 object Builtins {
 	@Name("Int")
-	class NzInt(private val value: Int) {
+	class NzInt(@JvmField val value: Int) {
+		companion object {
+			@JvmStatic fun parse(s: NzString): NzInt =
+				NzInt(s.value.toInt())
+		}
+
 		fun _add(other: NzInt) =
 			NzInt(Math.addExact(value, other.value))
 
@@ -25,7 +30,12 @@ object Builtins {
 	}
 
 	@Name("Float")
-	class NzFloat(private val value: Double) {
+	class NzFloat(@JvmField val value: Double) {
+		companion object {
+			@JvmStatic fun parse(s: NzString): NzFloat =
+				NzFloat(s.value.toDouble())
+		}
+
 		fun _add(other: NzFloat) =
 			NzFloat(value + other.value)
 
@@ -43,7 +53,7 @@ object Builtins {
 	}
 
 	@Name("String")
-	class NzString(private val value: String) {
+	class NzString(@JvmField val value: String) {
 		fun _add(other: NzString) =
 			NzString(value + other.value)
 
@@ -52,43 +62,44 @@ object Builtins {
 	}
 }
 
-private fun toBuiltin(jClass: Class<*>): BuiltinClass {
-	val name = jClass.getDeclaredAnnotation(Name::class.java).name.sym//jClass.annotations.asIterable().findInstance<Annotation, Name>()!!.name.sym
-	val klass = BuiltinClass(name, jClass)
-
-	fun cnvTy(jTy: Class<*>): Ty =
-		if (jTy == jClass)
-			klass
-		else {
-			TODO()
-		}
-
-	val methods = jClass.declaredMethods.mapNotNull { method ->
-		val methodName = unescapeName(method.name)
-		val mods = assertModifiers(method.modifiers)
-		if (mods.isPrivate || method.getDeclaredAnnotation(Hid::class.java) != null)
-			return@mapNotNull null
-
-		val parameters = Arr.fromMapped<java.lang.reflect.Parameter, NzMethod.Parameter>(method.parameters) {
-			NzMethod.Parameter(Loc.zero, cnvTy(it.type), it.name.sym)
-		}
-		BuiltinMethod(klass, Loc.zero, mods.isStatic, cnvTy(method.returnType), methodName, parameters)
-	}
-	klass.members = mapFromValues(methods, BuiltinMethod::name)
-	return klass
-}
-
-inline fun<T, reified U : T> Iterable<T>.findInstance(): U? {
-	for (value in this) {
-		if (value is U)
-			return value
-	}
-	return null
-}
-
 class Modifiers(val isStatic: Boolean, val isPrivate: Boolean)
 
-fun assertModifiers(modifiers: Int): Modifiers {
+
+internal object Builtin {
+	val all: Map<Sym, BuiltinClass> = run {
+		val jClassToBuiltinClass = mutableMapOf<Class<*>, BuiltinClass>()
+
+		for (jClass in Builtins::class.java.classes) {
+			jClassToBuiltinClass[jClass] = run {
+				val name = jClass.getDeclaredAnnotation(Name::class.java).name.sym
+				BuiltinClass(name, jClass)
+			}
+		}
+
+		fun convertType(jTy: Class<*>): Ty =
+			jClassToBuiltinClass[jTy] ?: throw Error("Builtin references non-builtin type $jTy")
+
+		jClassToBuiltinClass.toMap { jClass, klass ->
+			klass.members = jClass.declaredMethods.mapNotNull { method(klass, it, ::convertType) }.toMap { it.name to it }
+			klass.name to klass
+		}
+	}
+}
+
+private fun method(klass: BuiltinClass, method: Method, convertType: (Class<*>) -> Ty): BuiltinMethod? {
+	val methodName = unescapeName(method.name)
+	val mods = assertModifiers(method.modifiers)
+	if (mods.isPrivate || method.getDeclaredAnnotation(Hid::class.java) != null)
+		return null
+
+	val parameters = Arr.fromMapped<java.lang.reflect.Parameter, NzMethod.Parameter>(method.parameters) {
+		NzMethod.Parameter(Loc.zero, convertType(it.type), it.name.sym)
+	}
+
+	return BuiltinMethod(klass, Loc.zero, mods.isStatic, convertType(method.returnType), methodName, parameters)
+}
+
+private fun assertModifiers(modifiers: Int): Modifiers {
 	fun m(modifier: Int) = modifiers.hasFlag(modifier)
 
 	forbid(m(Modifier.ABSTRACT))
@@ -104,12 +115,4 @@ fun assertModifiers(modifiers: Int): Modifiers {
 	forbid(m(Modifier.VOLATILE))
 
 	return Modifiers(m(Modifier.STATIC), m(Modifier.PRIVATE))
-}
-
-internal object Builtin {
-	val all: Map<Sym, BuiltinClass> =
-		mapFrom(Builtins::class.java.classes.asList()) { jClass ->
-			val b = toBuiltin(jClass)
-			b.name to b
-		}
 }

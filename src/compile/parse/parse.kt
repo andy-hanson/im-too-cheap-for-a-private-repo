@@ -268,6 +268,14 @@ private class Parser(source: String) : Lexer(source) {
 					return ExprRes(finishRegular(), next)
 				}
 
+				is Token.TyName -> {
+					val className = loopCurrentToken.name
+					takeDot()
+					val staticMethodName = takeName()
+					addPart(StaticAccess(locFrom(loopStart), className, staticMethodName))
+					readAndLoop()
+				}
+
 				else -> {
 					//single token should have expression meaning
 					val loc = locFrom(loopStart)

@@ -12,7 +12,7 @@ internal fun typeCheck(imported: Arr<Module>, ast: ast.Klass): Klass {
 }
 
 private class BaseScope(imported: Arr<Module>) {
-	private val imports = mapFrom(imported) { import -> import.name to import.klass }
+	private val imports = imported.toMap { it.name to it.klass }
 
 	fun getTy(ast: ast.Ty): Ty =
 		when (ast) {
@@ -26,7 +26,7 @@ private class BaseScope(imported: Arr<Module>) {
 			}
 		}
 
-	private fun accessTy(loc: Loc, name: Sym): Ty =
+	fun accessTy(loc: Loc, name: Sym): Ty =
 		imports[name] ?: Builtin.all[name] ?: raise(loc, Err.CantBind(name))
 }
 
@@ -45,9 +45,11 @@ private class EmptyClassMaker(private val scope: BaseScope) {
 			}
 		}
 		klass.head = head
-		klass.setMembers(buildMap<Sym, Member> {
+		klass.setMembers(HashMap<Sym, Member>().apply {
 			fun add(member: Member) {
-				addOrFail(member.name, member) { raise(member.loc, Err.DuplicateMember(member.name)) }
+				addOr(member.name, member) {
+					raise(member.loc, Err.DuplicateMember(member.name))
+				}
 			}
 
 			for (slot in head.slots) {
@@ -115,7 +117,7 @@ private sealed class Expected {
 
 
 private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) {
-	//Track scope
+	//Tracks values. Input should be sym from a Name.
 	//Note that the Access stored here will be copied to have its loc changed.
 	private val scope = HashMap<Sym, Access>()
 
@@ -154,10 +156,26 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 		}
 	}
 
+	private fun callStaticMethod(loc: Loc, klass: ClassLike, staticMethodName: Sym, argAsts: Arr<ast.Expr>): StaticMethodCall {
+		val member = klass[staticMethodName]
+		return when (member) {
+			is NzMethod -> {
+				if (!member.isStatic) TODO()
+				val args = checkCall(loc, member, argAsts)
+				StaticMethodCall(loc, member, args)
+			}
+			else -> TODO()
+		}
+	}
+
 	private fun callMethod(loc: Loc, targetAst: ast.Expr, methodName: Sym, argAsts: Arr<ast.Expr>): MethodCall {
 		val (target, member) = getProperty(loc, targetAst, methodName)
 		return when (member) {
 			is NzMethod -> {
+				if (member.isStatic) {
+					TODO() //some error message
+				}
+
 				val args = checkCall(loc, member, argAsts)
 				MethodCall(loc, target, member, args)
 			}
@@ -170,8 +188,14 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 		when (exprAst) {
 			is ast.Access -> {
 				val (loc, name) = exprAst
-				returning(get(loc, name)) { checkAny(loc, expected, it.ty) }
+				get(loc, name).also { checkAny(loc, expected, it.ty) }
 			}
+
+			is ast.StaticAccess -> {
+				// Not in a call, so make a callback
+				TODO()
+			}
+
 
 			is ast.OperatorCall -> {
 				val (loc, left, op, right) = exprAst
@@ -180,7 +204,13 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 
 			is ast.Call -> {
 				val (loc, targetAst, argAsts) = exprAst
-				val x = when (targetAst) {
+				when (targetAst) {
+					is ast.StaticAccess -> {
+						val (loc2, className, staticMethodName) = targetAst
+						val ty = baseScope.accessTy(loc, className)
+						val klass = ty as? ClassLike ?: TODO()
+						callStaticMethod(loc2, klass, staticMethodName, argAsts)
+					}
 					is ast.GetProperty -> {
 						val (loc2, targetAst2, propertyName) = targetAst //TODO:names
 						callMethod(loc2, targetAst2, propertyName, argAsts)
@@ -189,15 +219,14 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 						TODO()
 					else ->
 						TODO() // Don't think anything else is allowed here.
-				}
-				returning(x) { checkAny(loc, expected, x.ty) }
+				}.also { checkAny(loc, expected, it.ty) }
 			}
 
 			// If we got here, assume 'Call' did not handle it specially.
 			is ast.GetProperty -> {
 				val loc = exprAst.loc
 				val (target, member) = getProperty(exprAst)
-				val x = when (member) {
+				when (member) {
 					is Slot ->
 						GetSlot(loc, target, member)
 					is NzMethod ->
@@ -205,8 +234,7 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 						TODO()
 					else ->
 						TODO()
-				}
-				returning(x) { checkAny(loc, expected, it.ty) }
+				}.also { checkAny(loc, expected, it.ty) }
 			}
 
 			is ast.Let -> {
@@ -234,7 +262,9 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 
 	private fun addToScope(access: Access): Unit {
 		val name = access.name
-		scope.addOr(name, access) { raise(access.loc, Err.NameAlreadyBound(name)) }
+		scope.addOr(name, access) {
+			raise(access.loc, Err.NameAlreadyBound(name))
+		}
 	}
 
 	private fun<T> checkPattern(ty: Ty, patternAst: ast.Pattern, action: () -> T): Pair<Pattern, T> {

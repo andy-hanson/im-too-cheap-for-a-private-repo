@@ -1,10 +1,5 @@
 package u
 
-inline fun<T> returning(value: T, fn: (T) -> Unit): T {
-	fn(value)
-	return value
-}
-
 fun never(): Nothing =
 	throw Error("This should never happen")
 

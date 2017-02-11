@@ -2,7 +2,7 @@ package ast
 
 import u.*
 
-abstract class Ast() : HasSexpr {
+abstract class Ast : HasSexpr {
 	abstract val loc: Loc
 }
 
@@ -105,6 +105,10 @@ sealed class Expr : Ast()
 data class Access(override val loc: Loc, val name: Sym) : Expr() {
 	override fun toSexpr() =
 		Sexpr.S(name)
+}
+data class StaticAccess(override val loc: Loc, val className: Sym, val staticMethodName: Sym) : Expr() { //Unlike Ty.Access, this is an Expr.
+	override fun toSexpr() =
+		sexprTuple(className, staticMethodName)
 }
 
 data class OperatorCall(override val loc: Loc, val left: Expr, val operator: Sym, val right: Expr) : Expr() {

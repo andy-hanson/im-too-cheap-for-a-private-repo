@@ -2,67 +2,51 @@ package u
 
 import java.util.HashMap
 
-fun<K, V> HashMap<K, V>.addOrFail(key: K, value: V, fail: () -> Error) {
-	if (key in this)
-		throw fail()
-	this[key] = value
-}
-
 fun<K, V> HashMap<K, V>.add(key: K, value: V) {
-	if (key in this) {
+	if (key in this)
 		throw Error("Already have key $key. Current keys: ${this.keys}")
-	}
 	this[key] = value
 }
 
-fun<K, V> HashMap<K, V>.addOr(key: K, value: V, f: (V) -> Unit) {
-	val old = tryAdd(key, value)
-	if (old != null)
+fun<K, V : Any> HashMap<K, V>.addOr(key: K, value: V, f: (V) -> Unit) {
+	val old = this[key]
+	if (old == null)
+		this[key] = value
+	else
 		f(old)
 }
-
-fun<K, V> HashMap<K, V>.tryAdd(key: K, value: V): V? =
-	returning(this[key]) { alreadyPresent ->
-		if (alreadyPresent == null)
-			this[key] = value
-	}
 
 fun<K, V> HashMap<K, V>.mustRemove(key: K) {
 	require(key in this)
 	remove(key)
 }
 
-fun<K, V> buildMap(action: HashMap<K, V>.() -> Unit): Map<K, V> =
-	HashMap<K, V>().apply(action)
-
-fun <A, K, V> mapFrom(inputs: Collection<A>, getPair: (A) -> Pair<K, V>): Map<K, V> =
-	mapFrom(inputs) { _, input -> getPair(input) }
-
-fun<A, K, V> mapFrom(inputs: Collection<A>, getPair: (Int, A) -> Pair<K, V>): Map<K, V> =
-	HashMap<K, V>(inputs.size).apply {
-		for ((index, element) in inputs.withIndex()) {
-			val (k, v) = getPair(index, element)
-			val alreadyPresent = tryAdd(k, v)
-			if (alreadyPresent != null)
-				throw Exception("Key already in map: $k")
+fun<K0, V0, K1, V1> Map<K0, V0>.toMap(getPair: (K0, V0) -> Pair<K1, V1>): Map<K1, V1> =
+	HashMap<K1, V1>().also {
+		for ((key, value) in this) {
+			val (newKey, newValue) = getPair(key, value)
+			it.add(newKey, newValue)
 		}
 	}
 
-fun<K, V> mapFromKeys(keys: Collection<K>, getValue: (Int, K) -> V) =
-	mapFrom(keys) { i, key ->
-		key to getValue(i, key)
-	}
+fun<A, K, V> Iterable<A>.toMap(getPair: (A) -> Pair<K, V>): Map<K, V> =
+	HashMap<K, V>().also { it.fill(this, getPair) }
 
-fun<K, V> mapFromValues(values: Collection<V>, getKey: (V) -> K): Map<K, V> =
-	mapFrom(values) { _, value ->
-		getKey(value) to value
+fun<A, K, V> Collection<A>.toMap(getPair: (A) -> Pair<K, V>): Map<K, V> =
+	HashMap<K, V>(size).also { it.fill(this, getPair) }
+
+private fun<A, K, V> HashMap<K, V>.fill(iter: Iterable<A>, getPair: (A) -> Pair<K, V>) {
+	for (element in iter) {
+		val (key, value) = getPair(element)
+		add(key, value)
 	}
+}
 
 fun<V> Map<*, V>.valuesIter(): Iterable<V> =
 	map { it.value }
 
 fun<K, V> Map<K, V>.reverse(): Map<V, K> =
-	buildMap {
+	HashMap<V, K>().apply {
 		for ((key, value) in this@reverse) {
 			add(value, key)
 		}

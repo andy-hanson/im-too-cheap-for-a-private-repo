@@ -8,7 +8,7 @@ sealed class Token {
 		override fun toString() = "Name($name)"
 	}
 	class TyName(val name: Sym) : Token() {
-		override fun toString() = "Name($name)"
+		override fun toString() = "TyName($name)"
 	}
 	class Operator(val name: Sym) : Token() {
 		override fun toString() = "Operator($name)"
@@ -39,7 +39,7 @@ sealed class Token {
 				Arr.of(At, AtAt, Backslash, Def, Enum, Fun, Generic, Import, Slots, Val, Var)
 			}
 			private val nameToKw: Map<Sym, Kw> by lazy {
-				mapFromValues(all, Token.Kw::name)
+				all.toMap { it.name to it }
 			}
 			fun opKeyword(name: Sym): Kw? =
 				nameToKw[name]

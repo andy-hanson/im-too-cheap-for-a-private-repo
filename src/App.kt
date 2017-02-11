@@ -27,8 +27,8 @@ val testSource = """
 slots
 	val Int a
 
-fun Int x(Int y)
-	y + y
+fun Int x(String s)
+	1 + Int.parse s
 """
 
 fun test() {
@@ -49,8 +49,8 @@ fun test() {
 	val j = klass.jClass
 	//printClass(klass.jClassBytes)
 
-	val x = j.getMethod("x", Builtins.NzInt::class.java)
-	val result = x.invoke(null, Builtins.NzInt(1))
+	val x = j.getMethod("x", Builtins.NzString::class.java)
+	val result = x.invoke(null, Builtins.NzString("123"))
 	println(result)
 }
 

@@ -34,9 +34,7 @@ internal abstract class Lexer(preSource: String) {
 		get() = source[pos]
 
 	private fun readChar(): Char =
-		returning(source[pos]) {
-			pos++
-		}
+		source[pos].also { pos++ }
 
 	private fun skip() {
 		readChar()
@@ -109,8 +107,8 @@ internal abstract class Lexer(preSource: String) {
 		val (str, isFloat) = buildStringFromChars { addChar ->
 			addChar(fst)
 			bufferWhile(addChar, ::isDigit)
-			returning (peek == '.') { isFloat ->
-				if (isFloat) {
+			(peek == '.').also {
+				if (it) {
 					skip()
 					addChar('.')
 					must(isDigit(peek), Loc.singleChar(pos), Err.TooMuchIndent)
@@ -151,7 +149,7 @@ internal abstract class Lexer(preSource: String) {
 
 	private fun lexIndent(): Int {
 		val start = pos
-		return returning(countWhile { it == '\t' }) {
+		return countWhile { it == '\t' }.also {
 			must(peek != ' ', locFrom(start), Err.LeadingSpace)
 		}
 	}
@@ -285,6 +283,9 @@ internal abstract class Lexer(preSource: String) {
 	}
 	protected fun takeComma() {
 		expectCharacter(',')
+	}
+	protected fun takeDot() {
+		expectCharacter('.')
 	}
 	protected fun tryTakeRparen() = tryTake(')')
 	protected fun tryTakeDot() = tryTake('.')
