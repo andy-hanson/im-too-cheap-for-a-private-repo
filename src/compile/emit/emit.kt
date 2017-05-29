@@ -4,6 +4,9 @@ import n.*
 import u.*
 import compile.DynamicClassLoader
 import org.objectweb.asm.*
+import Builtins.NzInt
+import Builtins.NzFloat
+import Builtins.NzString
 
 //MOVE
 
@@ -71,53 +74,73 @@ private class CodeWriter(method: NzMethod, private var mv: MethodVisitor, privat
 		mv.visitInsn(Opcodes.ARETURN)
 	}
 
-	private fun writeExpr(expr: Expr) {
-		return when (expr) {
-			is Access.Local -> {
-				val local = expr.local
-				mv.visitVarInsn(Opcodes.ALOAD, localDepths[local]!!)
-			}
+	private fun writeExpr(expr: Expr): Unit = when (expr) {
+		is Access.Local -> {
+			val local = expr.local
+			mv.visitVarInsn(Opcodes.ALOAD, localDepths[local]!!)
+		}
 
-			is Access.Parameter -> {
-				val param = expr.param
-				mv.visitVarInsn(Opcodes.ALOAD, paramDepths[param]!!)
-			}
+		is Access.Parameter -> {
+			val param = expr.param
+			mv.visitVarInsn(Opcodes.ALOAD, paramDepths[param]!!)
+		}
 
-			is StaticMethodCall -> {
-				val (_, method, args) = expr
-				for (arg in args)
-					writeExpr(arg)
-				invokeStatic(method.klass.javaTypeName, method.javaName, method.descriptor())
-			}
+		is StaticMethodCall -> {
+			val (_, method, args) = expr
+			for (arg in args)
+				writeExpr(arg)
+			invokeStatic(method.klass.javaTypeName, method.javaName, method.descriptor())
+		}
 
-			is MethodCall -> {
-				val (_, target, method, args) = expr
-				writeExpr(target)
-				for (arg in args)
-					writeExpr(arg)
-				invokeVirtual(method.klass.javaTypeName, method.javaName, method.descriptor())
-			}
+		is MethodCall -> {
+			val (_, target, method, args) = expr
+			writeExpr(target)
+			for (arg in args)
+				writeExpr(arg)
+			invokeVirtual(method.klass.javaTypeName, method.javaName, method.descriptor())
+		}
 
-			is GetSlot -> {
-				val (_, target, slot) = expr
-				writeExpr(target)
-				getField(target.ty.javaTypeName, slot.javaName, slot.ty.javaTypeDescriptor)
-				TODO("Use loc")
-			}
+		is GetSlot -> {
+			val (_, target, slot) = expr
+			writeExpr(target)
+			getField(target.ty.javaTypeName, slot.javaName, slot.ty.javaTypeDescriptor)
+			TODO("Use loc")
+		}
 
-			is Let -> {
-				val (loc, assigned, value, then) = expr
-				writeExpr(value)
-				addPattern(assigned)
-				labelHere(loc)
-				writeExpr(then)
-			}
+		is Let -> {
+			val (loc, assigned, value, then) = expr
+			writeExpr(value)
+			addPattern(assigned)
+			labelHere(loc)
+			writeExpr(then)
+		}
 
-			is Seq -> {
-				val (loc, action, then) = expr
-				writeExpr(action)
-				labelHere(loc)
-				writeExpr(then)
+		is Seq -> {
+			val (loc, action, then) = expr
+			writeExpr(action)
+			labelHere(loc)
+			writeExpr(then)
+		}
+
+		is Literal -> {
+			val (loc, value) = expr
+			when (value) {
+				is LiteralValue.Int -> {
+					val i = value.value
+					//Push a long literal
+
+					//Constructs an NzInt from a literal int
+					//TODO: helpers
+					mv.visitTypeInsn(Opcodes.NEW, NzInt.ty().javaTypeName)
+					mv.visitInsn(Opcodes.DUP)
+					mv.visitLdcInsn(i)
+					val desc = Type.getMethodDescriptor(Type.VOID_TYPE, Type.INT_TYPE)
+					mv.visitMethodInsn(Opcodes.INVOKESPECIAL, NzInt.ty().javaTypeName, "<init>", desc, false)
+				}
+
+				is LiteralValue.Float -> TODO("!")
+
+				is LiteralValue.Str -> TODO("!")
 			}
 		}
 	}
@@ -143,6 +166,8 @@ private class CodeWriter(method: NzMethod, private var mv: MethodVisitor, privat
 	private fun invokeStatic(invokedType: String, methodName: String, descriptor: String) {
 		mv.visitMethodInsn(Opcodes.INVOKESTATIC, invokedType, methodName, descriptor, /*isInterface*/false)
 	}
+
+	//TODO: invokeSpecial helper
 
 	private fun invokeVirtual(invokedType: String, methodName: String, descriptor: String) {
 		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, invokedType, methodName, descriptor, /*isInterface*/false)

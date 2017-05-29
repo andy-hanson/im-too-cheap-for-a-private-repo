@@ -39,7 +39,7 @@ fun test() {
 	//val l = c.lex(Path.from("a", "b"))
 	//println(l)
 
-	val ast = c.parse(Path.from("a", "b.nz"))
+	//val ast = c.parse(Path.from("a", "b.nz"))
 	//println(ast.toSexpr())
 
 	val module = c.compile(Path.from("a", "b"))

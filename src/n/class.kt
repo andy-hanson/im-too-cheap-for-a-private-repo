@@ -3,6 +3,9 @@ package n
 import u.*
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.Type
+import Builtins.NzInt
+import Builtins.NzFloat
+import Builtins.NzString
 
 interface N : HasSexpr {
 	//val loc: Loc?
@@ -56,7 +59,21 @@ sealed class ClassLike : Ty() {
 		get() = jClass
 }
 
-class BuiltinClass(override val name: Sym, override val jClass: Class<*>) : ClassLike() {
+class BuiltinClass private constructor(override val name: Sym, override val jClass: Class<*>) : ClassLike() {
+	companion object {
+		private val mp = hashMapOf<Class<*>, BuiltinClass>()
+		operator fun invoke(name: Sym, jClass: Class<*>): BuiltinClass {
+			val old = mp.get(jClass)
+			if (old != null) {
+				assert(old.name == name)
+				return old
+			}
+			val x = BuiltinClass(name, jClass)
+			mp[jClass] = x
+			return x
+		}
+	}
+
 	var members: Map<Sym, Member> by Late()
 
 	//TODO: have a source file for builtins
@@ -207,6 +224,41 @@ data class Let(override val loc: Loc, val assigned: Pattern, val value: Expr, va
 data class Seq(override val loc: Loc, val action: Expr, val then: Expr) : Expr() {
 	override val ty
 		get() = then.ty
+
+	override fun toSexpr() = TODO()
+}
+
+sealed class LiteralValue : HasSexpr {
+	abstract val ty: n.Ty
+
+	data class Int(val value: kotlin.Int) : LiteralValue() {
+		override val ty
+			get() = NzInt.ty()
+
+		override fun toSexpr() =
+				Sexpr.N(value)
+	}
+
+	data class Float(val value: Double): LiteralValue() {
+		override val ty
+			get() = NzFloat.ty()
+
+		override fun toSexpr() =
+				Sexpr.F(value)
+	}
+
+	data class Str(val value: String) : LiteralValue() {
+		override val ty
+			get() = NzString.ty()
+
+		override fun toSexpr() =
+				Sexpr.Str(value)
+	}
+}
+
+data class Literal(override val loc: Loc, val value: LiteralValue) : Expr() {
+	override val ty
+		get() = value.ty
 
 	override fun toSexpr() = TODO()
 }

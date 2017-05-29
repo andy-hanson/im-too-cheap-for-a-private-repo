@@ -242,7 +242,6 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 				val (valueTy, value) = checkAndInfer(valueAst)
 				val (pattern, expr) = checkPattern(valueTy, patternAst) {
 					check(expected, thenAst)
-
 				}
 				Let(loc, pattern, value, expr)
 			}
@@ -255,9 +254,9 @@ private class MethodChecker(private val baseScope: BaseScope, method: NzMethod) 
 			}
 
 			is ast.Literal -> {
-				TODO()
+				val (loc, value) = exprAst
+				Literal(loc, value).also { checkAny(loc, expected, it.ty) }
 			}
-
 		}
 
 	private fun addToScope(access: Access): Unit {

@@ -1,6 +1,6 @@
 package compile.parse
 
-import ast.LiteralValue
+import n.LiteralValue
 import u.*
 import compile.err.*
 import kotlin.text.slice
@@ -122,7 +122,7 @@ internal abstract class Lexer(preSource: String) {
 				LiteralValue.Float(if (negate) -f else f)
 			}
 			else {
-				val i = str.toLong()
+				val i = str.toInt()
 				LiteralValue.Int(if (negate) -i else i)
 			}
 		return Token.Literal(value)

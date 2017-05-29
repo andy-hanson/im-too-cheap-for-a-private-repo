@@ -1,6 +1,7 @@
 package ast
 
 import u.*
+import n.LiteralValue
 
 abstract class Ast : HasSexpr {
 	abstract val loc: Loc
@@ -140,21 +141,6 @@ data class Seq(override val loc: Loc, val first: Expr, val then: Expr) : Expr() 
 
 data class Literal(override val loc: Loc, val value: LiteralValue) : Expr() {
 	override fun toSexpr() = value.toSexpr()
-}
-
-sealed class LiteralValue : HasSexpr {
-	data class Int(val value: Long) : LiteralValue() {
-		override fun toSexpr() =
-			Sexpr.N(value)
-	}
-	data class Float(val value: Double): LiteralValue() {
-		override fun toSexpr() =
-			Sexpr.F(value)
-	}
-	data class Str(val value: String) : LiteralValue() {
-		override fun toSexpr() =
-			Sexpr.Str(value)
-	}
 }
 
 

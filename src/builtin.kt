@@ -6,9 +6,16 @@ private annotation class Name(val name: String)
 annotation class Hid() //TODO:PRIVATE
 
 object Builtins {
-	@Name("Int")
+	@Name(NzInt.name)
 	class NzInt(@JvmField val value: Int) {
 		companion object {
+			@Hid
+			const val name = "Int"
+
+			//TODO: find a way for @Hid to work with a getter...
+			@Hid
+			fun ty() = BuiltinClass(name.sym, NzInt::class.java)
+
 			@JvmStatic fun parse(s: NzString): NzInt =
 				NzInt(s.value.toInt())
 		}
@@ -29,9 +36,15 @@ object Builtins {
 		override fun toString() = value.toString()
 	}
 
-	@Name("Float")
+	@Name(NzFloat.name)
 	class NzFloat(@JvmField val value: Double) {
 		companion object {
+			@Hid
+			const val name = "Float"
+
+			@Hid
+			fun ty() = BuiltinClass(name.sym, NzFloat::class.java)
+
 			@JvmStatic fun parse(s: NzString): NzFloat =
 				NzFloat(s.value.toDouble())
 		}
@@ -54,6 +67,14 @@ object Builtins {
 
 	@Name("String")
 	class NzString(@JvmField val value: String) {
+		companion object {
+			@Hid
+			const val name = "String"
+
+			@Hid
+			fun ty() = BuiltinClass(name.sym, NzString::class.java)
+		}
+
 		fun _add(other: NzString) =
 			NzString(value + other.value)
 
@@ -80,7 +101,9 @@ internal object Builtin {
 			jClassToBuiltinClass[jTy] ?: throw Error("Builtin references non-builtin type $jTy")
 
 		jClassToBuiltinClass.toMap { jClass, klass ->
-			klass.members = jClass.declaredMethods.mapNotNull { method(klass, it, ::convertType) }.toMap { it.name to it }
+			klass.members = jClass.declaredMethods.mapNotNull {
+				method(klass, it, ::convertType)
+			}.toMap { it.name to it }
 			klass.name to klass
 		}
 	}

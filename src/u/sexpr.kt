@@ -6,7 +6,7 @@ sealed class Sexpr : HasSexpr {
 			Compound.List(x.map { it.toSexpr() })
 
 		operator fun invoke(n: Int) =
-			N(n.toLong())
+			N(n)
 	}
 
 	override fun toString(): String {
@@ -78,7 +78,7 @@ sealed class Sexpr : HasSexpr {
 	}
 
 
-	class N(val value: Long) : Sexpr() {
+	class N(val value: Int) : Sexpr() {
 		override fun show(indent: Int, builder: StringBuilder) {
 			builder.append(value)
 		}
@@ -141,7 +141,7 @@ class SexprBuilder(private val name: String) {
 		parts.add(sexpr)
 	}
 
-	fun s(n: Long) {
+	fun s(n: Int) {
 		s(Sexpr.N(n))
 	}
 

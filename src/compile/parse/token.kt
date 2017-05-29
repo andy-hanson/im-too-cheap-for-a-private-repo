@@ -1,6 +1,6 @@
 package compile.parse
 
-import ast.LiteralValue
+import n.LiteralValue
 import u.*
 
 sealed class Token {
